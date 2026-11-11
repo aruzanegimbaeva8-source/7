@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>№7 зертханалық жұмыс — Жүзу шартын анықтау</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2fb;--card:#fff;--ink:#14213d;--muted:#5a6785;--blue:#3157e0;--on:#fff;--teal:#0e9f8e;--amber:#f5a524;--line:#d9e1f2;--soft:#eef3ff;--soft2:#f6f8fe;--warn-bg:#fff5e6;--warn-line:#fbd38d;--shadow:0 10px 30px #1f2f6a14;--r:22px;--head1:#142a66;--head2:#3157e0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(900px 500px at 100% 0,color-mix(in srgb,var(--head2) 14%,transparent),transparent 65%) fixed,var(--bg);color:var(--ink);font:16px/1.6 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif}
+.container{width:min(1180px,92%);margin:auto}
+[data-tip]{cursor:help}
+header{position:relative;overflow:hidden;color:#fff;background:radial-gradient(900px 400px at 85% -10%,#6f8cff55,transparent 60%),linear-gradient(135deg,var(--head1),var(--head2));padding:64px 0 40px}
+header .coil{position:absolute;right:3%;bottom:-6px;width:230px;opacity:.28;pointer-events:none}
+.tag{display:inline-block;background:#ffffff26;border:1px solid #ffffff3d;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;margin-bottom:12px}
+h1{font-size:clamp(28px,4.2vw,46px);line-height:1.12;margin:0 0 6px;font-weight:900;letter-spacing:-.01em;text-wrap:balance}
+.rubric{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.rubric span{background:#ffffff1f;border:1px solid #ffffff33;padding:4px 11px;border-radius:999px;font-size:12.5px;font-weight:700}
+.language-tools{position:absolute;right:4%;top:14px;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;z-index:2}
+.language-tools select,.language-tools button{padding:8px 10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#14213d;font:inherit;font-size:14px;font-weight:700}
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--card) 92%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+nav .container{display:flex;gap:4px;overflow:auto;padding:8px 0}
+nav a{white-space:nowrap;text-decoration:none;color:var(--muted);padding:7px 11px;border-radius:999px;font-size:13px;font-weight:800;display:flex;gap:6px;align-items:center}
+nav a i{font-style:normal;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--soft);color:var(--blue);font-size:11px}
+nav a:hover{background:var(--soft);color:var(--blue)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;padding:16px 0}
+button{border:0;border-radius:12px;padding:10px 16px;background:var(--blue);color:var(--on);font:inherit;font-weight:800;font-size:15px;cursor:pointer;transition:transform .12s,filter .12s}
+button:hover{filter:brightness(1.07)}button:active{transform:translateY(1px)}button:disabled{opacity:.5;cursor:not-allowed}
+.toolbar .pdf{background:var(--teal)}button.secondary{background:var(--soft);color:var(--ink);border:1px solid var(--line)}
+main{padding:4px 0 70px}
+section{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:28px;margin-bottom:22px;scroll-margin-top:64px}
+h2{font-size:25px;line-height:1.25;margin:0 0 16px;display:flex;gap:13px;align-items:center;font-weight:900;text-wrap:balance}
+h2 .num{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-size:19px}
+h3{font-size:18px;margin:18px 0 8px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.card{background:var(--soft2);border:1px solid var(--line);border-radius:16px;padding:16px}
+.formula{font-family:"Cambria Math",Georgia,serif;font-size:21px;background:var(--soft);border-left:5px solid var(--blue);padding:12px 16px;border-radius:12px;margin:10px 0;overflow-x:auto}
+.highlight{background:var(--soft);border:1px solid color-mix(in srgb,var(--blue) 30%,var(--line));border-radius:14px;padding:14px 16px}
+.warning{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:14px;padding:14px 16px}
+.qbox{display:grid;gap:12px;margin-bottom:12px}.qbox p{margin:0;font-size:19px;font-weight:700;background:var(--soft);border-radius:16px;padding:16px 18px;border:1px solid var(--line)}
+.small{font-size:13.5px;color:var(--muted)}.muted{color:var(--muted)}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:8px;text-align:center}th{background:var(--soft);font-weight:800}
+td input{width:100%;min-width:62px;padding:7px;border:1px solid var(--line);border-radius:8px;text-align:center;font:inherit;background:var(--card);color:var(--ink)}
+.scroll{overflow:auto}
+ol,ul{padding-left:22px}li{margin:4px 0}
+.control{border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--card)}.control label{display:flex;justify-content:space-between;gap:8px;font-weight:800}
+.control output{color:var(--blue);font-weight:900}.control input[type=range]{width:100%;accent-color:var(--blue);margin:12px 0}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.metric{border:1px solid var(--line);border-radius:14px;background:var(--soft2);padding:12px}.metric small{display:block;color:var(--muted);font-weight:700}.metric strong{font-size:22px;font-weight:900}
+.simgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.spring-stage{background:linear-gradient(#f7fbff,#fff);border:2px dashed var(--line);border-radius:18px;padding:10px;transition:border-color .2s}
+.spring-stage.dragover{border-color:var(--blue);background:#eaf0ff}.spring-stage svg{width:100%;height:auto;display:block;max-height:560px}
+.spring-stage.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.graph-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0}
+.graph-card canvas{display:block;width:100%;height:330px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:13px;font-weight:700;margin-top:8px}.legend span:before{content:"";display:inline-block;width:19px;height:4px;vertical-align:middle;margin-right:6px;background:var(--c);border-radius:2px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.studentgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.studentgrid label{font-weight:800}
+.studentgrid input,textarea{display:block;width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;font:inherit;margin-top:5px;background:var(--card);color:var(--ink)}
+textarea{min-height:115px}
+.status{font-weight:800;color:var(--teal);min-height:24px}
+/* equipment chips */
+.eqlist{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.eqlist li{display:flex;align-items:center;gap:10px;background:var(--soft2);border:1px solid var(--line);border-radius:14px;padding:8px 12px;font-weight:800;margin:0;transition:transform .12s,border-color .12s}
+.eqlist li[data-tip]:hover,.eqlist li[data-tip]:focus{transform:translateY(-2px);border-color:var(--blue);outline:none}
+.eqicon{width:46px;height:46px;flex:none;background:var(--card);border-radius:12px;border:1px solid var(--line)}.eqicon svg{width:100%;height:100%;display:block}
+.hint{display:flex;gap:9px;align-items:center;margin:10px 0}
+/* tooltip */
+#tip{position:fixed;z-index:200;width:268px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px #0f1c4a40;padding:14px;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .14s,transform .14s}
+#tip.on{opacity:1;transform:none}
+#tip .art{height:128px;border-radius:12px;background:linear-gradient(#f4f7ff,#e6edff);display:grid;place-items:center;margin-bottom:10px}#tip .art svg{height:116px;width:116px}
+#tip b{display:block;font-size:17px;font-weight:900}#tip p{margin:4px 0 0;font-size:14px;line-height:1.45;color:var(--muted)}
+/* builder */
+.builder{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;margin:6px 0 12px}
+.tray{display:flex;gap:8px;flex-wrap:wrap}
+.part{display:flex;flex-direction:column;align-items:center;gap:2px;width:92px;padding:8px 6px;border-radius:14px;background:var(--card);color:var(--ink);border:2px solid var(--line);font-size:12.5px;font-weight:800;cursor:grab}
+.part:hover{border-color:var(--blue);filter:none}.part .eqicon{width:56px;height:56px;border:0;background:var(--soft2)}
+.part.used{opacity:.4;border-style:dashed;cursor:default}.part.used:after{content:"✓";color:var(--teal);font-weight:900}
+.buildmsg{min-height:46px;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;background:var(--soft);border:1px solid var(--line);font-weight:700;margin:10px 0}
+.buildmsg.ok{background:#e4f8f1;border-color:#9fdcc8;color:#0a5f4f}.buildmsg.bad{background:var(--warn-bg);border-color:var(--warn-line)}
+.lockable{position:relative;transition:opacity .2s}.lockable.locked{opacity:.45;pointer-events:none;filter:grayscale(.6)}
+.lockmsg{font-weight:800;color:var(--muted);margin:6px 0}
+.ghost text{font-size:11px;font-weight:800;fill:#64748b}
+/* error calc */
+.errgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.errresult{font-size:20px;font-weight:900;background:linear-gradient(135deg,#e8efff,#e4f8f1);border-radius:14px;padding:14px 16px;margin-top:8px}
+/* Dana helper */
+#dana{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+#danaBtn{display:flex;align-items:flex-end;gap:8px;background:none;border:0;padding:0;color:inherit}
+#danaBtn .bubble{background:var(--card);color:var(--ink);border:2px solid var(--blue);border-radius:16px 16px 4px 16px;padding:8px 12px;font-size:13.5px;font-weight:800;max-width:170px;text-align:left;box-shadow:var(--shadow);animation:bob 3s ease-in-out infinite}
+#danaBtn svg{width:84px;height:94px;filter:drop-shadow(0 6px 10px #1a2a6c44);transition:transform .2s}#danaBtn:hover svg{transform:rotate(-5deg) scale(1.05)}
+@keyframes bob{50%{transform:translateY(-4px)}}
+#danaPanel{width:min(380px,calc(100vw - 32px));height:min(520px,calc(100vh - 150px));background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 60px #0f1c4a47;display:flex;flex-direction:column;overflow:hidden}
+#danaPanel[hidden]{display:none}
+.dhead{display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(135deg,var(--head1),var(--head2));color:#fff}
+.dhead svg{width:40px;height:44px}.dhead b{font-size:17px;font-weight:900;flex:1}.dhead button{background:#ffffff26;padding:4px 10px;border-radius:9px}
+#danaMsgs{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--soft2)}
+.msg{max-width:86%;padding:9px 12px;border-radius:14px;font-size:14.5px;line-height:1.45;white-space:pre-wrap}
+.msg.bot{background:var(--card);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}.msg.me{background:var(--blue);color:var(--on);align-self:flex-end;border-bottom-right-radius:4px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px 0}.chips button{padding:5px 10px;font-size:12.5px;border-radius:999px}
+#danaForm{display:flex;gap:6px;padding:10px 12px}#danaForm input{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font:inherit;background:var(--card);color:var(--ink)}
+.control select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;font-weight:700;background:var(--card);color:var(--ink);margin-top:8px}
+#calculationText{white-space:pre-line}
+.goals{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:7px;max-width:920px}.goals li{margin:0;background:#ffffff1f;border:1px solid #ffffff33;border-radius:12px;padding:8px 13px;font-size:14.5px;font-weight:600}.goals b{font-weight:900}
+#studentTop h2{margin-bottom:12px}#studentTop .studentgrid{margin-bottom:0;grid-template-columns:2fr 1fr 1fr}@media(max-width:760px){#studentTop .studentgrid{grid-template-columns:1fr}}
+.paramgrid{margin:8px 0 14px}
+/* themes */
+.contrast{--bg:#000;--card:#101010;--ink:#fff;--muted:#eee;--line:#fff;--soft:#1b1b1b;--soft2:#0c0c0c;--blue:#ffe600;--on:#000;--teal:#38f2ff;--warn-bg:#2a1d00;--warn-line:#ffe600;--shadow:none;--head1:#000;--head2:#000}
+.contrast header{color:#ffe600}.contrast .tag,.contrast .rubric span{color:#fff}.contrast .spring-stage,.contrast #tip .art{background:#fff}.contrast .buildmsg.ok{color:#000}
+.warm{--bg:#fff7e6;--blue:#7c3aed;--line:#e7d9ba;--soft:#fbf1d9;--soft2:#fffaf0;--head1:#5b21b6;--head2:#a855f7}
+.cool{--bg:#ecf8ff;--blue:#007783;--line:#c4e1e8;--soft:#e0f4f7;--soft2:#f3fbfd;--head1:#04485a;--head2:#00a3a8}
+.large-text{zoom:1.1}
+header::before{content:"";position:absolute;inset:0;opacity:.55;pointer-events:none;background-image:radial-gradient(1.5px 1.5px at 20px 30px,#fff,transparent),radial-gradient(1px 1px at 120px 90px,#fff,transparent),radial-gradient(2px 2px at 200px 50px,#fff9,transparent),radial-gradient(1px 1px at 260px 120px,#fff,transparent);background-size:300px 150px}
+header .container{position:relative}
+.headplanet{position:absolute;right:-60px;bottom:-110px;width:320px;height:320px;border-radius:50%;opacity:.6;pointer-events:none;box-shadow:inset -30px -30px 60px #0005,0 0 80px #ffffff40}
+.planetpick{margin-top:22px;max-width:940px;background:#ffffff1a;border:1px solid #ffffff3d;border-radius:18px;padding:14px 16px}
+.pp-t{font-size:20px;font-weight:900}.planetpick p{margin:2px 0 10px;font-size:14px}
+.pp-list{display:flex;flex-wrap:wrap;gap:8px}
+.pp{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:86px;padding:8px 6px;background:#ffffff1f;border:2px solid transparent;color:#fff;border-radius:14px;font-size:12px}
+.pp i{width:34px;height:34px;border-radius:50%;box-shadow:inset -5px -5px 9px #0004}.pp b{font-weight:800;font-size:13px}.pp small{opacity:.85}
+.pp.on{background:#fff;color:#14213d;border-color:#ffd54a}
+.pp-now{margin-top:10px;font-weight:800}.planetbar{margin:6px 0 4px;font-weight:800}.hypo{font-size:17px;line-height:1.7}
+@keyframes wave{50%{transform:rotate(-14deg)}}.wave{transform-origin:67px 76px;animation:wave 1.6s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.wave,#danaBtn .bubble{animation:none!important}}
+footer{text-align:center;color:var(--muted);padding:20px 20px 110px}
+@media(max-width:760px){section{padding:18px}.grid,.grid3,.controls,.simgrid,.studentgrid,.eqlist,.errgrid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.language-tools{left:4%;right:4%;justify-content:flex-end}.language-tools select{max-width:120px}header{padding-top:80px}.headplanet{width:180px;height:180px;right:-50px;bottom:-60px}table{font-size:12px}.graph-card canvas{height:280px}h2{font-size:21px}.builder{grid-template-columns:1fr}#danaBtn .bubble{display:none}}
+@media print{body{background:#fff!important;color:#111!important;font-size:11pt}header{background:#fff!important;color:#111!important;border-bottom:2px solid #222;padding:18px 0}.headplanet,.pp-list,.planetpick p,header:before{display:none}.language-tools,nav,.toolbar,.btns,button,input[type=range],#dana,#tip,.tray,.hint{display:none!important}main{padding:0}.container{width:100%}section{box-shadow:none;border:1px solid #aaa;break-inside:avoid;padding:13px;margin:9px 0}.graph-card canvas{height:260px}input,textarea{border:1px solid #999!important}}
+.control select,td select{width:100%;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-weight:700}
+.control select{margin:8px 0 2px}td select{min-width:150px;font-size:13px}td select.ok{background:#dff6ea;border-color:#58c28f}td select.bad{background:#fff0dc;border-color:#f0a54b}
+.statebox{display:flex;align-items:center;justify-content:center;padding:14px;border-radius:16px;font-size:20px;font-weight:900;margin:8px 0;border:2px solid var(--line);transition:background .3s}
+.statebox.float{background:#dff6f1;border-color:#0e9f8e;color:#065f52}.statebox.sink{background:#fde4e4;border-color:#dc2626;color:#8c1414}.statebox.neutral{background:#fff3cf;border-color:#e0a100;color:#6b4b00}
+.contrast .statebox{color:#000}
+.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* ================= VISUAL UPGRADE (design only) ================= */
+:root{--r:28px}
+body{background:
+ radial-gradient(1000px 600px at 100% -5%,color-mix(in srgb,var(--head2) 24%,transparent),transparent 65%),
+ radial-gradient(800px 520px at -10% 45%,color-mix(in srgb,var(--teal) 16%,transparent),transparent 65%),
+ radial-gradient(circle,color-mix(in srgb,var(--blue) 16%,transparent) 1.4px,transparent 1.7px) 0 0/28px 28px,
+ var(--bg);background-attachment:fixed}
+#prog{position:fixed;top:0;left:0;height:6px;width:0;z-index:300;background:linear-gradient(90deg,var(--amber),var(--teal),var(--blue));border-radius:0 6px 6px 0;transition:width .12s}
+/* header */
+header{padding:84px 0 60px;border-radius:0 0 48px 48px;box-shadow:0 22px 60px color-mix(in srgb,var(--head1) 45%,transparent)}
+header::before{animation:twinkle 4s ease-in-out infinite alternate}
+header::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;background-image:radial-gradient(2.5px 2.5px at 60px 40px,#ffd54a,transparent),radial-gradient(2px 2px at 170px 110px,#fff,transparent),radial-gradient(3px 3px at 310px 70px,#fff8,transparent);background-size:380px 190px;animation:twinkle 6s 1s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.25}to{opacity:.75}}
+@keyframes floaty{50%{transform:translateY(-16px) rotate(4deg)}}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
+.headplanet{width:400px;height:400px;right:-80px;bottom:-150px;opacity:.85;animation:floaty 10s ease-in-out infinite;box-shadow:inset -40px -40px 80px #0006,0 0 100px #ffffff55}
+.headplanet::before,.headplanet::after{content:"";position:absolute;pointer-events:none}
+.headplanet::before{inset:0;border-radius:50%}
+.headplanet[data-i="0"]::before,.headplanet[data-i="3"]::before,.headplanet[data-i="4"]::before{background:radial-gradient(circle at 28% 62%,#0003 0 9%,transparent 10%),radial-gradient(circle at 60% 30%,#0003 0 6%,transparent 7%),radial-gradient(circle at 70% 70%,#0003 0 11%,transparent 12%),radial-gradient(circle at 40% 25%,#0002 0 4%,transparent 5%)}
+.headplanet[data-i="1"]::before,.headplanet[data-i="5"]::before,.headplanet[data-i="6"]::before,.headplanet[data-i="7"]::before,.headplanet[data-i="8"]::before{background:repeating-linear-gradient(172deg,transparent 0 26px,#ffffff1c 26px 42px,transparent 42px 70px,#0000001a 70px 82px)}
+.headplanet[data-i="2"]::before{background:radial-gradient(ellipse at 35% 40%,#4cc27a99 0 14%,transparent 15%),radial-gradient(ellipse at 62% 62%,#4cc27a99 0 18%,transparent 19%),radial-gradient(ellipse at 52% 22%,#ffffff88 0 10%,transparent 11%)}
+.headplanet[data-i="6"]::after{left:-32%;right:-32%;top:36%;bottom:36%;border-radius:50%;border:16px solid #f2dfa0aa;box-shadow:0 0 0 7px #b79a5066,inset 0 0 0 5px #b79a5044;transform:rotate(-16deg)}
+.tag{font-size:14px;padding:6px 16px;backdrop-filter:blur(6px)}
+h1{font-size:clamp(30px,4.8vw,54px);text-shadow:0 4px 18px #0006}
+.goals li{backdrop-filter:blur(6px);border-radius:16px;transition:transform .15s}.goals li:hover{transform:translateX(5px)}
+.language-tools select,.language-tools button{border-radius:14px;box-shadow:0 3px 10px #0003;cursor:pointer}
+.planetpick{background:#ffffff22;backdrop-filter:blur(12px);border-radius:28px;padding:18px 20px;box-shadow:0 12px 36px #0003}
+.pp{min-width:92px;border-radius:18px;padding:10px 6px;box-shadow:none;transition:transform .18s,background .18s,box-shadow .18s}
+.pp i{width:44px;height:44px;box-shadow:inset -7px -7px 12px #0005,0 4px 10px #0004;transition:transform .35s}
+.pp:hover{transform:translateY(-5px);background:#ffffff38;filter:none}.pp:hover i{transform:rotate(25deg) scale(1.12)}
+.pp.on{transform:translateY(-3px) scale(1.06);box-shadow:0 0 0 4px #ffd54a88,0 10px 24px #0004}
+.pp-now{font-size:17px;background:#0000002b;display:inline-block;padding:6px 14px;border-radius:999px}
+/* nav */
+nav{box-shadow:0 8px 24px #1f2f6a14}
+nav a{padding:8px 13px;transition:background .15s,color .15s,transform .15s}
+nav a:hover{transform:translateY(-2px)}
+nav a.active{background:var(--blue);color:var(--on)}nav a.active i{background:#ffffff40;color:inherit}
+/* buttons */
+.toolbar button,.btns button,#danaForm button{border-radius:16px;padding:11px 18px;box-shadow:0 5px 0 color-mix(in srgb,var(--blue) 55%,#000)}
+.toolbar button:active,.btns button:active,#danaForm button:active{transform:translateY(4px);box-shadow:0 1px 0 color-mix(in srgb,var(--blue) 55%,#000)}
+.toolbar .pdf{box-shadow:0 5px 0 #08695e}
+.toolbar button.secondary,.btns button.secondary{box-shadow:0 5px 0 var(--line)}
+.toolbar button:hover,.btns button:hover{transform:translateY(-2px)}
+/* sections */
+section{position:relative;overflow:hidden;border-radius:var(--r);padding:34px 36px;border:2px solid var(--line);box-shadow:0 14px 40px #1f2f6a18;transition:box-shadow .3s}
+section:hover{box-shadow:0 18px 50px color-mix(in srgb,var(--blue) 26%,transparent)}
+section::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:linear-gradient(90deg,var(--blue),var(--teal),var(--amber))}
+section::after{position:absolute;right:20px;top:14px;font-size:84px;line-height:1;opacity:.16;pointer-events:none;transform:rotate(10deg)}
+#studentTop::after{content:"🧑‍🚀"}#facts::after{content:"🌟"}#question::after{content:"❓"}#aim::after{content:"🎯"}#hypothesis::after{content:"💡"}#variables::after{content:"🔬"}#safety::after{content:"🦺"}#setup::after{content:"🧪"}#procedure::after{content:"📏"}#model::after{content:"🎮"}#graphs::after{content:"📊"}#compare::after{content:"⚖️"}#studentInfo::after{content:"✍️"}
+h2{font-size:27px}
+h2 .num{width:50px;height:50px;border-radius:17px;font-size:22px;transform:rotate(-6deg);box-shadow:0 6px 0 color-mix(in srgb,var(--blue) 55%,#000);transition:transform .25s}
+section:hover h2 .num{transform:rotate(6deg) scale(1.08)}
+h3{display:inline-block;background:linear-gradient(transparent 62%,color-mix(in srgb,var(--amber) 45%,transparent) 62%);padding:0 4px}
+/* blocks */
+.card{border-radius:22px;border:2px solid var(--line);transition:transform .2s,box-shadow .2s,border-color .2s}
+.grid3>.card:hover,.grid>.card:hover{transform:translateY(-4px);border-color:var(--blue);box-shadow:0 12px 26px color-mix(in srgb,var(--blue) 22%,transparent)}
+.formula{font-size:24px;border-left:0;border-radius:18px;padding:14px 20px;text-align:center;background:linear-gradient(135deg,var(--soft),color-mix(in srgb,var(--teal) 14%,var(--soft)));border:2px dashed color-mix(in srgb,var(--blue) 55%,var(--line))}
+.highlight{border-radius:18px;border-left:7px solid var(--blue)}
+.warning{border-radius:18px;border-left:7px solid var(--amber)}
+.qbox p{font-size:23px;border-radius:24px;border:2px solid var(--blue);background:linear-gradient(135deg,var(--soft),color-mix(in srgb,var(--teal) 14%,var(--soft)));box-shadow:0 8px 0 color-mix(in srgb,var(--blue) 25%,transparent)}
+ol{counter-reset:n;list-style:none;padding-left:0}
+ol>li{counter-increment:n;position:relative;padding:8px 12px 8px 52px;margin:7px 0;background:var(--soft2);border:1px solid var(--line);border-radius:16px;transition:transform .15s,border-color .15s}
+ol>li:hover{transform:translateX(5px);border-color:var(--blue)}
+ol>li::before{content:counter(n);position:absolute;left:10px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;font-weight:900;font-size:14px}
+.contrast ol>li::before{color:#000}
+table{border-radius:16px}
+th{background:linear-gradient(135deg,var(--head1),color-mix(in srgb,var(--head2) 70%,var(--head1)));color:#fff;border-color:transparent}
+tbody tr:nth-child(even) td{background:var(--soft2)}tbody tr:hover td{background:var(--soft)}
+.contrast th{background:#000;color:#ffe600;border-color:#fff}
+input:focus,textarea:focus,select:focus{outline:3px solid color-mix(in srgb,var(--blue) 40%,transparent);border-color:var(--blue)}
+.control{border-radius:20px;border:2px solid var(--line);transition:border-color .2s,transform .2s}.control:hover{border-color:var(--blue);transform:translateY(-2px)}
+.metric{border-radius:18px;border:2px solid var(--line);transition:transform .2s}.metric:hover{transform:translateY(-3px) rotate(-.5deg)}
+.metric strong{font-size:25px;color:var(--blue)}
+.contrast .metric strong{color:#ffe600}
+.statebox{font-size:23px;border-radius:22px;border-width:3px;box-shadow:0 6px 0 #0001}
+.eqlist li{border-radius:18px;border-width:2px}
+.eqicon{border-radius:14px}
+.spring-stage{border-width:3px;border-radius:24px;background:radial-gradient(circle at 50% 0,color-mix(in srgb,var(--blue) 10%,#fff),#fff 70%)}
+.graph-card{border-radius:20px}
+.errresult{border-radius:18px;border:2px solid var(--teal)}
+.part{border-radius:18px;transition:transform .18s,border-color .18s,box-shadow .18s}.part:not(.used):hover{transform:translateY(-4px) rotate(-2deg);box-shadow:0 10px 20px color-mix(in srgb,var(--blue) 24%,transparent)}
+.buildmsg{border-radius:18px}
+#danaPanel{border-radius:26px;border:2px solid var(--blue)}
+#danaBtn svg{filter:drop-shadow(0 8px 12px #1a2a6c55)}
+#danaBtn .bubble{border-radius:18px 18px 4px 18px}
+footer{font-weight:800}
+/* planet facts */
+.factsgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.fact{position:relative;padding:20px 18px 18px;border-radius:24px;border:2px solid var(--line);background:linear-gradient(160deg,var(--card),var(--soft));box-shadow:0 8px 0 color-mix(in srgb,var(--blue) 18%,transparent);animation:pop .5s both;transition:transform .2s,border-color .2s}
+.fact:hover{transform:translateY(-5px) rotate(-.8deg);border-color:var(--blue)}
+.fact .ico{display:grid;place-items:center;width:58px;height:58px;font-size:32px;border-radius:50%;margin-bottom:10px;background:linear-gradient(135deg,var(--soft),color-mix(in srgb,var(--blue) 22%,var(--soft)));box-shadow:inset 0 -4px 0 #0000001a}
+.fact p{margin:0;font-size:15.5px;line-height:1.55;font-weight:600}
+.factweight{margin-top:18px;padding:16px 20px;border-radius:24px;color:#fff;background:linear-gradient(135deg,var(--head1),var(--head2));display:grid;gap:10px;box-shadow:0 8px 0 color-mix(in srgb,var(--head1) 40%,transparent)}
+.factweight .wt{font-weight:800;font-size:16.5px}
+.gbar{position:relative;margin-top:20px;height:16px;border-radius:99px;background:#ffffff30;overflow:visible}
+.gbar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#ffd54a,#ff8a4c);transition:width .7s cubic-bezier(.3,.8,.3,1)}
+.gbar s{position:absolute;top:-5px;width:4px;height:26px;border-radius:3px;background:#fff;text-decoration:none}
+.gbar s::after{content:"🌍";position:absolute;top:-22px;left:-8px;font-size:16px}
+.gbarlbl{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;opacity:.9}
+.contrast .factweight{color:#ffe600;border:2px solid #ffe600;box-shadow:none}
+.contrast .fact{box-shadow:none}
+/* reveal on scroll */
+.js section.rv{opacity:0;transform:translateY(26px);transition:opacity .6s,transform .6s,box-shadow .3s}
+.js section.rv.in{opacity:1;transform:none}
+@media(max-width:760px){.factsgrid{grid-template-columns:1fr}section{padding:26px 18px 20px}section::after{font-size:56px}.headplanet{width:230px;height:230px;right:-70px;bottom:-80px}header{border-radius:0 0 32px 32px}}
+@media(prefers-reduced-motion:reduce){.headplanet,header::before,header::after,.fact{animation:none!important}.js section.rv{opacity:1;transform:none;transition:none}}
+@media print{#prog{display:none}section::before,section::after,header::after{display:none}.js section.rv{opacity:1!important;transform:none!important}.fact,.factweight{animation:none;box-shadow:none;background:#fff!important;color:#111!important;border:1px solid #999}ol>li{background:#fff;border-color:#ccc}th{background:#eee!important;color:#111!important}.gbar{display:none}}
+</style></head>
+<body>
+<div id="prog"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="steel" x1="0" x2="1"><stop offset="0" stop-color="#e5e9f0"/><stop offset=".5" stop-color="#97a3b6"/><stop offset="1" stop-color="#d6dce6"/></linearGradient>
+<linearGradient id="wood" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f6d58e"/><stop offset="1" stop-color="#e0a94e"/></linearGradient>
+</defs></svg>
+
+<header>
+<div class="language-tools"><select id="language" aria-label="Language"><option value="kk">Қазақша</option><option value="ru">Русский</option><option value="en">English</option></select><select id="themeChoice" aria-label="Түстер"><option value="default">🎨 Планета түсі</option><option value="contrast">◐ Жоғары контраст</option><option value="warm">Жылы түстер</option><option value="cool">Суық түстер</option></select><button id="largeText" type="button" class="secondary">A+</button></div>
+<div class="headplanet" id="headPlanet"></div>
+<div class="container"><span class="tag" data-i18n="tag">Физика • 7-сынып</span><h1 data-i18n="title">Зертханалық жұмыс №7 «Жүзу шартын анықтау»</h1><ul class="goals"><li><b>7.3.1.14</b> – <span data-i18n="goal1">денелердің жүзу шарттарын зерттеу</span></li><li><b>7.1.3.3</b> – <span data-i18n="goal2">физика кабинетінде қауіпсіздік техникасын білу және сақтау</span></li></ul><div class="planetpick" id="planetPick"><div class="pp-t" data-i18n="planetAsk"></div><p data-i18n="planetHint"></p><div class="pp-list" id="ppList" role="radiogroup"></div><div class="pp-now" id="ppNow" aria-live="polite"></div></div></div>
+</header>
+<nav><div class="container">
+<a href="#question"><i>1</i><span data-i18n="nav1">Сұрақ</span></a><a href="#aim"><i>2</i><span data-i18n="nav2">Мақсат</span></a><a href="#hypothesis"><i>3</i><span data-i18n="nav3">Гипотеза</span></a><a href="#variables"><i>4</i><span data-i18n="nav4">Шамалар</span></a><a href="#safety"><i>5</i><span data-i18n="nav5">Қауіпсіздік</span></a><a href="#setup"><i>6</i><span data-i18n="nav6">Құралдар</span></a><a href="#procedure"><i>7</i><span data-i18n="nav7">Өлшеу</span></a><a href="#model"><i>8</i><span data-i18n="nav8">Модель</span></a><a href="#graphs"><i>9</i><span data-i18n="nav9">Нәтиже</span></a><a href="#compare"><i>10</i><span data-i18n="nav10">Салыстыру</span></a>
+</div></nav>
+<div class="container toolbar"><button onclick="window.print()" data-i18n="print">🖨️ Басып шығару</button><button class="pdf" onclick="window.print()" data-i18n="pdf">📄 PDF ретінде сақтау</button><span class="small" data-i18n="pdfhint"></span></div>
+
+<main class="container">
+<section id="studentTop"><h2 data-i18n="studentTopTitle">Оқушы туралы мәлімет</h2><div class="studentgrid"><label><span data-i18n="studentName"></span><input id="studentName"></label><label><span data-i18n="studentClass"></span><input id="studentClass"></label><label><span data-i18n="studentMass"></span><input id="studentMass" type="number" min="1" max="200" step="0.1" value="40" inputmode="decimal"></label></div></section>
+
+<section id="facts"><h2><span class="num">🌟</span><span id="factsTitle"></span></h2><div class="factsgrid" id="factsGrid"></div><div class="factweight" id="factWeight"></div></section>
+
+<section id="question"><h2><span class="num">1</span><span data-i18n="s1">Зерттеу сұрағы</span></h2>
+<div class="qbox"><p data-i18n="q1"></p></div><div class="highlight" data-i18n="questionSimple"></div></section>
+
+<section id="aim"><h2><span class="num">2</span><span data-i18n="s2">Зерттеудің мақсаты мен міндеттері</span></h2>
+<div class="highlight"><b data-i18n="aimlabel"></b> <span data-i18n="aimtext"></span></div>
+<h3 data-i18n="tasks"></h3><ol><li data-i18n="task1"></li><li data-i18n="task2"></li><li data-i18n="task3"></li><li data-i18n="task4"></li><li data-i18n="task5"></li><li data-i18n="task6"></li></ol></section>
+
+<section id="hypothesis"><h2><span class="num">3</span><span data-i18n="s3">Гипотеза және физикалық негіздеме</span></h2>
+<div class="card hypo"><span data-i18n="hypo"></span></div><p class="small" data-i18n="symNote"></p>
+<h3 data-i18n="simpleTitle"></h3>
+<div class="grid3"><div class="card">🔴 <b data-i18n="st_sink"></b><p data-i18n="simple1"></p></div><div class="card">🟢 <b data-i18n="st_float"></b><p data-i18n="simple2"></p></div><div class="card">🟡 <b data-i18n="st_neutral"></b><p data-i18n="simple3"></p></div></div>
+<h3 data-i18n="formulasTitle"></h3>
+<p data-i18n="fgText"></p><div class="formula">F<sub>ау</sub> = m·g</div>
+<p data-i18n="faText"></p><div class="formula">F<sub>A</sub> = ρ<sub>с</sub>·g·V<sub>бат</sub></div>
+<p data-i18n="where"></p><ul><li data-i18n="w1"></li><li data-i18n="w2"></li><li data-i18n="w3"></li><li data-i18n="w4"></li><li data-i18n="w5"></li><li data-i18n="w6"></li></ul></section>
+
+<section id="variables"><h2><span class="num">4</span><span data-i18n="s4">Тәуелсіз, тәуелді және тұрақты шамалар</span></h2>
+<div class="scroll"><table><thead><tr><th data-i18n="quantity"></th><th data-i18n="type"></th><th data-i18n="symbol"></th></tr></thead><tbody>
+<tr><td data-i18n="v1"></td><td data-i18n="independent"></td><td>ρ<sub>д</sub></td></tr>
+<tr><td data-i18n="v2"></td><td data-i18n="independent"></td><td>ρ<sub>с</sub></td></tr>
+<tr><td data-i18n="v3"></td><td data-i18n="dependent"></td><td>—</td></tr>
+<tr><td data-i18n="v4"></td><td data-i18n="dependent"></td><td>V<sub>бат</sub></td></tr>
+<tr><td data-i18n="v5"></td><td data-i18n="dependent"></td><td>F<sub>ау</sub></td></tr>
+<tr><td data-i18n="v6"></td><td data-i18n="dependent"></td><td>F<sub>A</sub></td></tr>
+<tr><td data-i18n="v7"></td><td data-i18n="constant"></td><td>g</td></tr>
+<tr><td data-i18n="v8"></td><td data-i18n="constant"></td><td>t</td></tr>
+<tr><td data-i18n="v9"></td><td data-i18n="constant"></td><td>—</td></tr></tbody></table></div>
+<h3 data-i18n="remember"></h3>
+<div class="grid3"><div class="card">🟢 <b data-i18n="independent"></b><p data-i18n="indExplain"></p></div><div class="card">🔵 <b data-i18n="dependent"></b><p data-i18n="depExplain"></p></div><div class="card">🟠 <b data-i18n="constant"></b><p data-i18n="constExplain"></p></div></div></section>
+
+<section id="safety"><h2><span class="num">5</span><span data-i18n="s5">Қауіпсіздік ережелері</span></h2>
+<ol><li data-i18n="safe1"></li><li data-i18n="safe2"></li><li data-i18n="safe3"></li><li data-i18n="safe4"></li><li data-i18n="safe5"></li><li data-i18n="safe6"></li><li data-i18n="safe7"></li></ol>
+<div class="warning" data-i18n="safetyNote"></div></section>
+
+<section id="setup"><h2><span class="num">6</span><span data-i18n="s6">Құралдар мен қондырғы сызбасы</span></h2>
+<div class="grid"><div><h3 data-i18n="equipment"></h3>
+<div class="hint small"><span>👆</span><span data-i18n="hoverHint"></span></div>
+<ul class="eqlist">
+<li data-tip="vessel" tabindex="0"><span class="eqicon" data-art="vessel"></span><span data-i18n="eq1"></span></li>
+<li data-tip="bodies" tabindex="0"><span class="eqicon" data-art="bodies"></span><span data-i18n="eq2"></span></li>
+<li data-tip="scale" tabindex="0"><span class="eqicon" data-art="scale"></span><span data-i18n="eq3"></span></li>
+<li data-tip="cylinder" tabindex="0"><span class="eqicon" data-art="cylinder"></span><span data-i18n="eq4"></span></li>
+<li data-tip="ruler" tabindex="0"><span class="eqicon" data-art="ruler"></span><span data-i18n="eq5"></span></li>
+<li data-tip="tongs" tabindex="0"><span class="eqicon" data-art="tongs"></span><span data-i18n="eq6"></span></li>
+</ul>
+<p data-i18n="setupText"></p><div class="formula">ρ<sub>д</sub> = m / V</div><div class="formula">ρ<sub>су</sub> = 1000 [кг/м³]</div></div>
+<div class="card"><svg viewBox="0 0 360 300" role="img" aria-label="Setup">
+<g data-tip="vessel"><path d="M110 60 L118 250 Q118 262 130 262 H230 Q242 262 242 250 L250 60" fill="#eaf6ff" stroke="#64748b" stroke-width="3"/></g>
+<path d="M114 110 L118 250 Q118 262 130 262 H230 Q242 262 242 250 L246 110Z" fill="#9fd3f2" opacity=".75"/><path d="M114 110 H246" stroke="#4aa3d8" stroke-width="2"/>
+<g data-tip="bodies"><rect x="150" y="212" width="44" height="44" rx="4" fill="#9a9aa4" stroke="#55555f" stroke-width="2"/><rect x="170" y="92" width="42" height="42" rx="4" fill="#e3b36b" stroke="#a9773a" stroke-width="2"/></g>
+<g data-tip="scale"><rect x="12" y="236" width="76" height="26" rx="6" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/><rect x="22" y="241" width="56" height="12" rx="3" fill="#14213d"/><text x="50" y="251" text-anchor="middle" font-size="9" fill="#7cfc9a" font-weight="800">m</text><rect x="22" y="228" width="56" height="8" rx="3" fill="url(#steel)" stroke="#64748b"/></g>
+<g data-tip="cylinder"><rect x="282" y="110" width="30" height="152" rx="4" fill="#eef8ff" stroke="#64748b" stroke-width="2.5"/><rect x="284" y="190" width="26" height="70" fill="#9fd3f2"/><path d="M282 130h10M282 150h8M282 170h10M282 190h8M282 210h10M282 230h8" stroke="#475569" stroke-width="1.5"/></g>
+<text x="297" y="285" text-anchor="middle" fill="#475569" font-size="12" data-i18n="diagV">V</text><text x="50" y="285" text-anchor="middle" fill="#475569" font-size="12" data-i18n="diagM">m</text><text x="180" y="285" text-anchor="middle" fill="#475569" font-size="12" data-i18n="diagVessel">Су құйылған ыдыс</text>
+</svg><p class="small" data-i18n="diagramNote"></p></div></div></section>
+
+<section id="procedure"><h2><span class="num">7</span><span data-i18n="s7">Өлшеу реті және нәтижелер кестесі</span></h2>
+<ol><li data-i18n="proc1"></li><li data-i18n="proc2"></li><li data-i18n="proc3"></li><li data-i18n="proc4"></li><li data-i18n="proc5"></li><li data-i18n="proc6"></li><li data-i18n="proc7"></li><li data-i18n="proc8"></li><li data-i18n="proc9"></li><li data-i18n="proc10"></li></ol>
+<div class="scroll"><table id="dataTable"><thead><tr><th>№</th><th data-i18n="thm"></th><th data-i18n="thV"></th><th data-i18n="thrho"></th><th data-i18n="thrc"></th><th data-i18n="thr"></th><th data-i18n="thobs"></th><th data-i18n="thref"></th><th data-i18n="thd"></th><th data-i18n="theps"></th></tr></thead><tbody id="tableBody"></tbody></table></div>
+<div class="btns"><button id="addRow" data-i18n="addRow"></button><button id="fillExample" class="secondary" data-i18n="fillExample"></button><button id="clearTable" class="secondary" data-i18n="clear"></button></div>
+<p class="small" data-i18n="tableNote"></p></section>
+
+<section id="model"><h2><span class="num">8</span><span data-i18n="s8">Интерактивті модель</span></h2>
+<div class="planetbar highlight" id="planetBar"></div><p class="small" data-i18n="planetNote"></p><p data-i18n="modelIntro"></p>
+<h3 data-i18n="buildTitle"></h3>
+<div class="builder"><span class="small" data-i18n="trayTitle"></span>
+<div class="tray">
+<button class="part" data-part="vessel" data-tip="vessel" draggable="true"><span class="eqicon" data-art="vessel"></span><span data-i18n="eq1"></span></button>
+<button class="part" data-part="liquid" data-tip="liquid" draggable="true"><span class="eqicon" data-art="liquid"></span><span data-i18n="pLiquid"></span></button>
+<button class="part" data-part="body" data-tip="bodies" draggable="true"><span class="eqicon" data-art="bodies"></span><span data-i18n="pBody"></span></button>
+<button class="part" data-part="scale" data-tip="scale" draggable="true"><span class="eqicon" data-art="scale"></span><span data-i18n="eq3"></span></button>
+<button class="part" data-part="cylinder" data-tip="cylinder" draggable="true"><span class="eqicon" data-art="cylinder"></span><span data-i18n="eq4"></span></button>
+</div></div>
+<div id="buildMsg" class="buildmsg" aria-live="polite"></div>
+<div class="simgrid"><div>
+<div id="controlsWrap" class="lockable locked">
+<div class="controls">
+<div class="control"><label for="bodySel"><span data-i18n="bodyLabel"></span><output id="rdOut"></output></label><select id="bodySel"></select><input id="rhoD" type="range" min="100" max="8000" step="10" value="800"><div class="small" data-i18n="rhoDRange"></div></div>
+<div class="control"><label for="liqSel"><span data-i18n="liqLabel"></span><output id="rcOut"></output></label><select id="liqSel"></select><input id="rhoC" type="range" min="700" max="1400" step="10" value="1000"><div class="small" data-i18n="rhoCRange"></div></div>
+<div class="control" style="grid-column:1/-1"><label for="vol"><span data-i18n="volLabel"></span><output id="vOut"></output></label><input id="vol" type="range" min="20" max="400" step="1" value="100"><div class="small" data-i18n="volRange"></div></div>
+</div>
+<h3 data-i18n="predTitle"></h3>
+<div class="statebox" id="stateBox"><span id="stateOut">—</span></div>
+<div class="metrics"><div class="metric"><small data-i18n="ratioMetric"></small><strong id="ratioOut">—</strong></div><div class="metric"><small data-i18n="fracMetric"></small><strong id="fracOut">—</strong></div><div class="metric"><small data-i18n="fgMetric"></small><strong id="fgOut">—</strong></div><div class="metric"><small data-i18n="faMetric"></small><strong id="faOut">—</strong></div><div class="metric"><small data-i18n="massMetric"></small><strong id="massOut">—</strong></div><div class="metric"><small data-i18n="vReadMetric"></small><strong id="vreadOut">—</strong></div></div>
+<p id="calculationText" class="highlight"></p>
+<div class="btns"><button id="recordBtn" data-i18n="recordBtn"></button><button id="resetModel" class="secondary" data-i18n="resetModel"></button></div><div id="recStatus" class="status" aria-live="polite"></div>
+<p class="small" data-i18n="recordNote"></p></div>
+<p id="lockMsg" class="lockmsg" data-i18n="lockedNote"></p>
+<div class="small" data-i18n="modelCaveat"></div>
+<div class="btns"><button id="resetBuild" class="secondary" data-i18n="resetBuild"></button></div></div>
+
+<div><div class="spring-stage" id="stage"><svg viewBox="0 0 420 380" role="img" aria-label="Interactive model">
+<g id="ghosts" class="ghost" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5">
+<g id="ghVessel"><rect x="130" y="90" width="170" height="240" rx="8"/><text x="138" y="108" stroke="none" data-i18n="eq1"></text></g>
+<g id="ghLiquid"><rect x="136" y="150" width="158" height="176"/><text x="144" y="300" stroke="none" data-i18n="pLiquid"></text></g>
+<g id="ghBody"><rect x="190" y="215" width="50" height="50"/><text x="196" y="205" stroke="none" data-i18n="pBody"></text></g>
+<g id="ghScale"><rect x="12" y="275" width="112" height="60"/><text x="20" y="268" stroke="none" data-i18n="eq3"></text></g>
+<g id="ghCyl"><rect x="326" y="105" width="64" height="235"/><text x="326" y="98" stroke="none" data-i18n="eq4"></text></g></g>
+<g id="gVessel" data-tip="vessel"><path d="M130 90 L134 322 Q134 332 144 332 H286 Q296 332 296 322 L300 90" fill="none" stroke="#64748b" stroke-width="4" stroke-linejoin="round"/><rect x="118" y="332" width="194" height="8" rx="3" fill="#cbd5e1"/></g>
+<g id="gLiquid" data-tip="liquid"><path id="liqFill" d="M132.5 150 H297.5 L295.5 322 Q295.5 330 287 330 H143 Q134.5 330 134.5 322Z" fill="#9fd3f2" opacity=".7"/><line x1="132" y1="150" x2="298" y2="150" stroke="#4aa3d8" stroke-width="2"/></g>
+<g id="gBody" data-tip="bodies"><g id="bodyG" style="transition:transform .8s cubic-bezier(.3,.8,.3,1)"><rect id="bodyRect" x="0" y="0" width="50" height="50" rx="5" stroke="#5b4a35" stroke-width="2"/><g id="arrows" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path id="arrG" stroke="#dc2626"/><path id="arrA" stroke="#2563eb"/></g></g></g>
+<g id="gScale" data-tip="scale"><rect x="14" y="326" width="108" height="12" rx="4" fill="#cbd5e1"/><rect x="22" y="292" width="92" height="36" rx="7" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/><rect x="30" y="298" width="76" height="20" rx="4" fill="#14213d"/><text id="scaleText" x="68" y="313" text-anchor="middle" font-size="12" font-weight="800" fill="#7cfc9a"></text><rect x="34" y="280" width="68" height="10" rx="4" fill="url(#steel)" stroke="#64748b"/></g>
+<g id="gCyl" data-tip="cylinder"><rect x="338" y="110" width="40" height="220" rx="5" fill="#f3fbff" stroke="#64748b" stroke-width="3"/><rect id="cylFill" x="340" y="230" width="36" height="100" fill="#9fd3f2" opacity=".85"/><g id="cylTicks" stroke="#475569" stroke-width="1.5" fill="#475569" font-size="9" font-weight="700"></g><text id="cylText" x="358" y="356" text-anchor="middle" font-size="12" font-weight="800" fill="#0f766e"></text></g>
+</svg><div class="legend" style="padding:0 6px"><span style="--c:#dc2626" data-i18n="legG"></span><span style="--c:#2563eb" data-i18n="legA"></span></div><p class="small" data-i18n="stageNote"></p></div></div></div></section>
+
+<section id="graphs"><h2><span class="num">9</span><span data-i18n="s9">Нәтиже және формулалар</span></h2>
+<p data-i18n="resIntro"></p>
+<div class="scroll"><table><thead><tr><th data-i18n="cond"></th><th data-i18n="forces"></th><th data-i18n="resTh"></th></tr></thead><tbody>
+<tr><td>ρ<sub>д</sub> &gt; ρ<sub>с</sub></td><td>F<sub>ау</sub> &gt; F<sub>A</sub></td><td data-i18n="res1"></td></tr>
+<tr><td>ρ<sub>д</sub> &lt; ρ<sub>с</sub></td><td>F<sub>A</sub> = F<sub>ау</sub></td><td data-i18n="res2"></td></tr>
+<tr><td>ρ<sub>д</sub> = ρ<sub>с</sub></td><td>F<sub>A</sub> = F<sub>ау</sub></td><td data-i18n="res3"></td></tr></tbody></table></div>
+<p data-i18n="fgText"></p><div class="formula">F<sub>ау</sub> = m·g</div>
+<p data-i18n="faText"></p><div class="formula">F<sub>A</sub> = ρ<sub>с</sub>·g·V<sub>бат</sub></div>
+<p data-i18n="eqText"></p><div class="formula">F<sub>A</sub> = F<sub>ау</sub></div>
+<h3 data-i18n="graphTitleR"></h3><p data-i18n="graphExplain"></p>
+<div class="formula">r = ρ<sub>д</sub> / ρ<sub>с</sub></div>
+<ul><li data-i18n="rl1"></li><li data-i18n="rl2"></li><li data-i18n="rl3"></li></ul>
+
+<h3 data-i18n="errTitle"></h3><p data-i18n="errIntro"></p>
+<div class="formula">Δρ<sub>i</sub> = |ρ<sub>i</sub> − ρ<sub>эт</sub>|<br>ε<sub>i</sub> = Δρ<sub>i</sub> / ρ<sub>эт</sub> · 100 %<br>Δρ = (Δρ₁ + … + Δρₙ) / n<br>ε = (ε₁ + … + εₙ) / n</div>
+<div class="errgrid"><div class="metric"><small data-i18n="errAbs"></small><strong id="errDk">—</strong></div><div class="metric"><small data-i18n="errRel"></small><strong id="errEps">—</strong></div><div class="metric"><small data-i18n="errMatch"></small><strong id="errMatch">—</strong></div></div>
+<div class="errresult" id="errResult">—</div></section>
+
+<section id="compare"><h2><span class="num">10</span><span data-i18n="s10">Модельдің болжамы мен тәжірибеде өлшенген мән</span></h2>
+<p data-i18n="cmpIntro"></p>
+<div class="grid"><div class="card"><h3>🖥️ <span data-i18n="modelPrediction"></span></h3><p data-i18n="modelPredictionText"></p><div id="compareModel" class="highlight"></div></div>
+<div class="card"><h3>🔬 <span data-i18n="measuredValue"></span></h3><p data-i18n="measuredText"></p><div class="formula">ρ<sub>д</sub> = m / V</div><div id="measuredSummary" class="highlight"></div></div></div>
+<h3 data-i18n="compareTableTitle"></h3>
+<div class="scroll"><table><thead><tr><th data-i18n="indicator"></th><th data-i18n="modelPrediction"></th><th data-i18n="measuredValue"></th><th data-i18n="cAbs"></th><th data-i18n="cRel"></th></tr></thead><tbody>
+<tr><td data-i18n="cRho"></td><td id="cmpRhoM">—</td><td id="cmpRhoE">—</td><td id="cmpRhoA">—</td><td id="cmpRhoR">—</td></tr>
+<tr><td data-i18n="cRhoC"></td><td id="cmpRcM">—</td><td id="cmpRcE">—</td><td id="cmpRcA">—</td><td id="cmpRcR">—</td></tr>
+<tr><td data-i18n="cState"></td><td id="cmpStM">—</td><td id="cmpStE">—</td><td id="cmpStA">—</td><td>—</td></tr>
+<tr><td data-i18n="cFA"></td><td id="cmpFaM">—</td><td id="cmpFaE">—</td><td>—</td><td>—</td></tr></tbody></table></div>
+<div class="formula">Δ = |A<sub>тәж</sub> − A<sub>модель</sub>| &nbsp;&nbsp;|&nbsp;&nbsp; ε = Δ / A<sub>модель</sub> · 100 %</div>
+<div class="warning" data-i18n="cmpImportant"></div>
+
+<h3 data-i18n="conclTitle"></h3><p data-i18n="conclText1"></p><p data-i18n="conclText2"></p><div class="highlight"><b data-i18n="conclMain"></b></div></section>
+
+<section id="studentInfo"><h2 data-i18n="studentTitle"></h2>
+<label for="conclusion"><b data-i18n="conclusionLabel"></b></label><textarea id="conclusion"></textarea>
+<div class="btns"><button id="saveWork" data-i18n="save"></button><button id="startOver" class="secondary" data-i18n="restart"></button></div><div id="saveStatus" class="status" aria-live="polite"></div></section>
+</main>
+<footer data-i18n="footer"></footer>
+
+<div id="tip" role="tooltip"><div class="art"></div><b></b><p></p></div>
+
+<div id="dana">
+<div id="danaPanel" hidden>
+<div class="dhead"><span id="danaAvatarHead"></span><b data-i18n="danaName">Дана</b><button id="danaClose" type="button" aria-label="Close">✕</button></div>
+<div id="danaMsgs" aria-live="polite"></div>
+<div class="chips" id="danaChips"></div>
+<form id="danaForm"><input id="danaInput" autocomplete="off" data-ph="danaPlaceholder"><button type="submit" data-i18n="danaSend">Жіберу</button></form>
+</div>
+<button id="danaBtn" type="button"><span class="bubble" data-i18n="danaBubble">Түсінбедің бе? Данадан сұра!</span><span id="danaAvatarBtn"></span></button>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let G=9.8;
+const OWL=`<svg viewBox="0 0 100 110" aria-hidden="true"><ellipse cx="50" cy="106" rx="26" ry="3.5" fill="#0003"/><rect x="23" y="64" width="54" height="28" rx="9" fill="#cfd8f5" stroke="#27307a" stroke-width="2.5"/><rect x="36" y="92" width="11" height="10" rx="5" fill="#fff" stroke="#27307a" stroke-width="2.5"/><rect x="53" y="92" width="11" height="10" rx="5" fill="#fff" stroke="#27307a" stroke-width="2.5"/><ellipse cx="41.5" cy="103" rx="8" ry="4.5" fill="#5568f0" stroke="#27307a" stroke-width="2.5"/><ellipse cx="58.5" cy="103" rx="8" ry="4.5" fill="#5568f0" stroke="#27307a" stroke-width="2.5"/><rect x="31" y="66" width="38" height="30" rx="14" fill="#fff" stroke="#27307a" stroke-width="2.5"/><rect x="41" y="78" width="18" height="10" rx="3" fill="#5568f0"/><circle cx="46" cy="83" r="2" fill="#fbbf24"/><circle cx="54" cy="83" r="2" fill="#f87171"/><ellipse cx="27" cy="80" rx="6.5" ry="12" transform="rotate(20 27 80)" fill="#fff" stroke="#27307a" stroke-width="2.5"/><circle cx="23" cy="92" r="5" fill="#5568f0" stroke="#27307a" stroke-width="2"/><g class="wave"><ellipse cx="74" cy="66" rx="6.5" ry="12" transform="rotate(35 74 66)" fill="#fff" stroke="#27307a" stroke-width="2.5"/><circle cx="82" cy="54" r="5" fill="#5568f0" stroke="#27307a" stroke-width="2"/></g><path d="M50 14V7" stroke="#27307a" stroke-width="2.5" stroke-linecap="round"/><circle cx="50" cy="6" r="3.5" fill="#f59e0b" stroke="#27307a" stroke-width="1.5"/><circle cx="19" cy="44" r="5" fill="#5568f0" stroke="#27307a" stroke-width="2.5"/><circle cx="81" cy="44" r="5" fill="#5568f0" stroke="#27307a" stroke-width="2.5"/><circle cx="50" cy="44" r="30" fill="#fff" stroke="#27307a" stroke-width="2.5"/><ellipse cx="50" cy="46" rx="23" ry="19" fill="#1d2a73"/><path d="M33 36q5-8 15-9" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/><ellipse cx="42" cy="45" rx="3.2" ry="4.2" fill="#fff"/><ellipse cx="58" cy="45" rx="3.2" ry="4.2" fill="#fff"/><circle cx="43" cy="43.5" r="1.2" fill="#1d2a73"/><circle cx="59" cy="43.5" r="1.2" fill="#1d2a73"/><circle cx="36" cy="52" r="3" fill="#ff8fb0" opacity=".6"/><circle cx="64" cy="52" r="3" fill="#ff8fb0" opacity=".6"/><path d="M44 53q6 6 12 0" stroke="#ffb3c7" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+$('danaAvatarBtn').innerHTML=OWL;$('danaAvatarHead').innerHTML=OWL;
+
+/* ================= Illustrations ================= */
+const S='stroke="#475569" stroke-width="1.5"';
+const ART={
+vessel:`<svg viewBox="0 0 120 120"><path d="M28 18 L33 100 Q33 108 41 108 H79 Q87 108 87 100 L92 18" fill="#eef8ff" ${S}/><path d="M31 56 L33 100 Q33 108 41 108 H79 Q87 108 87 100 L89 56Z" fill="#9fd3f2" opacity=".8"/><path d="M31 56H89" stroke="#4aa3d8" stroke-width="2"/><path d="M33 34h8M33 48h6M33 62h8M33 76h6M33 90h8" stroke="#475569" stroke-width="1.3"/><path d="M24 18h72" stroke="#64748b" stroke-width="3" stroke-linecap="round"/></svg>`,
+liquid:`<svg viewBox="0 0 120 120"><path d="M50 12h20v16l16 18v52q0 10-10 10H44q-10 0-10-10V46l16-18z" fill="#cfeaf8" ${S}/><path d="M36 62h48v36q0 8-8 8H44q-8 0-8-8z" fill="#7cc2ec" opacity=".85"/><rect x="48" y="8" width="24" height="8" rx="2" fill="#64748b"/><path d="M60 68c-7 8-9 12-9 16a9 9 0 0 0 18 0c0-4-2-8-9-16z" fill="#fff" opacity=".8"/></svg>`,
+bodies:`<svg viewBox="0 0 120 120"><rect x="10" y="60" width="38" height="38" rx="4" fill="#e3b36b" stroke="#a9773a" stroke-width="2"/><circle cx="82" cy="78" r="22" fill="#a4a8b3" stroke="#555a66" stroke-width="2"/><path d="M70 70q6-8 16-6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/><ellipse cx="38" cy="38" rx="16" ry="6" fill="#f2c27b" stroke="#b9873f" stroke-width="2"/><path d="M22 38v-14a16 6 0 0 1 32 0v14" fill="#f2c27b" stroke="#b9873f" stroke-width="2"/><ellipse cx="38" cy="24" rx="16" ry="6" fill="#f8d79c" stroke="#b9873f" stroke-width="2"/></svg>`,
+scale:`<svg viewBox="0 0 120 120"><rect x="14" y="74" width="92" height="32" rx="7" fill="#e2e8f0" ${S}/><rect x="28" y="80" width="64" height="16" rx="3" fill="#14213d"/><text x="60" y="92.5" text-anchor="middle" font-size="12" font-weight="800" fill="#7cfc9a">125,0</text><rect x="26" y="58" width="68" height="10" rx="4" fill="url(#steel)" ${S}/><circle cx="100" cy="100" r="2.5" fill="#94a3b8"/><path d="M60 40v14" stroke="#94a3b8" stroke-width="2" stroke-dasharray="3 3"/></svg>`,
+cylinder:`<svg viewBox="0 0 120 120"><path d="M42 12h36" stroke="#64748b" stroke-width="3" stroke-linecap="round"/><rect x="44" y="14" width="32" height="88" rx="4" fill="#f3fbff" ${S}/><rect x="46" y="58" width="28" height="42" fill="#9fd3f2" opacity=".85"/><path d="M46 28h12M46 38h8M46 48h12M46 58h8M46 68h12M46 78h8M46 88h12" stroke="#475569" stroke-width="1.3"/><ellipse cx="60" cy="108" rx="26" ry="5" fill="url(#steel)" ${S}/></svg>`,
+ruler:`<svg viewBox="0 0 120 120"><rect x="6" y="44" width="108" height="32" rx="3" fill="url(#wood)" stroke="#b7822c" stroke-width="1.5"/><g stroke="#6b4a12" stroke-width="1.3"><path d="M14 44v10M19 44v6M24 44v6M29 44v6M34 44v6M39 44v10M44 44v6M49 44v6M54 44v6M59 44v6M64 44v10M69 44v6M74 44v6M79 44v6M84 44v6M89 44v10M94 44v6M99 44v6M104 44v6"/></g><g fill="#6b4a12" font-size="9" font-weight="800" text-anchor="middle"><text x="14" y="68">0</text><text x="39" y="68">5</text><text x="64" y="68">10</text><text x="89" y="68">15</text></g></svg>`,
+tongs:`<svg viewBox="0 0 120 120"><path d="M44 14L72 88M76 14L48 88" stroke="#64748b" stroke-width="6" stroke-linecap="round"/><path d="M44 14L72 88M76 14L48 88" stroke="#cfd8e6" stroke-width="1.8" stroke-linecap="round"/><circle cx="60" cy="50" r="5" fill="#475569"/><path d="M47 90q-4 14 4 16M73 90q4 14-4 16" stroke="#64748b" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M40 12q-6-4-8 4M80 12q6-4 8 4" stroke="#64748b" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`
+};
+document.querySelectorAll('[data-art]').forEach(el=>el.innerHTML=ART[el.dataset.art]);
+
+/* ================= Data: bodies and liquids ================= */
+const BOD=[
+{id:'cork',rho:240,kk:'Жеңіл ағаш',ru:'Пробка',en:'Cork'},
+{id:'pine',rho:520,kk:'Қарағай',ru:'Сосна',en:'Pine wood'},
+{id:'ice',rho:900,kk:'Мұз',ru:'Лёд',en:'Ice'},
+{id:'rubber',rho:1100,kk:'Резеңке',ru:'Резина',en:'Rubber'},
+{id:'alu',rho:2700,kk:'Алюминий',ru:'Алюминий',en:'Aluminium'},
+{id:'iron',rho:7800,kk:'Темір',ru:'Железо',en:'Iron'}];
+const LIQ=[
+{id:'alc',rho:800,col:'#cfe9f5',kk:'Спирт',ru:'Спирт',en:'Alcohol'},
+{id:'oil',rho:920,col:'#f2d56b',kk:'Күнбағыс майы',ru:'Подсолнечное масло',en:'Sunflower oil'},
+{id:'water',rho:1000,col:'#9fd3f2',kk:'Су',ru:'Вода',en:'Water'},
+{id:'milk',rho:1030,col:'#f4f1e8',kk:'Сүт',ru:'Молоко',en:'Milk'},
+{id:'salt',rho:1100,col:'#86c4e6',kk:'Тұзды су',ru:'Солёная вода',en:'Salt water'},
+{id:'gly',rho:1260,col:'#cfe9d6',kk:'Глицерин',ru:'Глицерин',en:'Glycerine'}];
+function stateOf(rd,rc){return Math.abs(rd-rc)<5?'neutral':rd<rc?'float':'sink'}
+
+/* ================= Translations ================= */
+const T={
+kk:{w6:'<b>F<sub>A</sub></b> — Архимед күші: сұйық денені жоғары итереді [Н].',w5:'<b>F<sub>ау</sub></b> — ауырлық күші: денені төмен тартады [Н];',symNote:'ρ<sub>д</sub> — дененің тығыздығы, ρ<sub>с</sub> — сұйықтықтың тығыздығы.',planetNote:'Планетаны жоғарғы баннерден ауыстыра аласың. Планета ауысса, F<sub>ау</sub> мен F<sub>A</sub> өзгереді, бірақ дене жүзе ме, бата ма — өзгермейді: екі күш те бірдей g-ға көбейтіледі.',gLess:'Жердегіден {x} есе әлсіз тартады',gMore:'Жердегіден {x} есе күшті тартады',planetNow:'Сен қазір:',planetHint:'Планетаны таңда: сайттың түсі өзгереді, ал есептерде сол планетаның g мәні қолданылады.',planetAsk:'🚀 Сен қазір қай планетадасың?',tag:'Физика • 7-сынып',title:'Зертханалық жұмыс №7 «Жүзу шартын анықтау»',goal1:'денелердің жүзу шарттарын зерттеу',goal2:'физика кабинетінде қауіпсіздік техникасын білу және сақтау',
+nav1:'Сұрақ',nav2:'Мақсат',nav3:'Гипотеза',nav4:'Шамалар',nav5:'Қауіпсіздік',nav6:'Құралдар',nav7:'Өлшеу',nav8:'Модель',nav9:'Нәтиже',nav10:'Салыстыру',
+print:'🖨️ Басып шығару',pdf:'📄 PDF ретінде сақтау',pdfhint:'PDF сақтау үшін ашылған терезеде «Save as PDF / PDF ретінде сақтау» таңдаңыз.',
+studentTopTitle:'Оқушы туралы мәлімет',studentName:'Оқушының аты-жөні',studentClass:'Сыныбы',studentMass:'Оқушының массасы, кг',
+s1:'Зерттеу сұрағы',s2:'Зерттеудің мақсаты мен міндеттері',s3:'Гипотеза және физикалық негіздеме',s4:'Тәуелсіз, тәуелді және тұрақты шамалар',s5:'Қауіпсіздік ережелері',s6:'Құралдар мен қондырғы сызбасы',s7:'Өлшеу реті және нәтижелер кестесі',s8:'Интерактивті модель',s9:'Нәтиже және формулалар',s10:'Модельдің болжамы мен тәжірибеде өлшенген мән',
+q1:'Дененің тығыздығы мен сұйықтықтың тығыздығы дененің жүзуіне, батуына немесе сұйық ішінде қалқып тұруына қалай әсер етеді?',
+questionSimple:'<b>Қарапайым тілмен:</b> тасты суға салсақ, ол неге батады, ал жеңіл ағаш бөлшегі неге жүзеді? Мұны алдын ала қалай білуге болады?',
+aimlabel:'Зерттеу мақсаты:',aimtext:'Денелердің сұйықтықта жүзу шарттарын тәжірибе арқылы зерттеу және дененің тығыздығы мен сұйықтықтың тығыздығының әсерін анықтау.',tasks:'Міндеттері',
+task1:'Денелердің жүзу шарттары мен Архимед күші туралы теориялық мәліметтерді қарастыру.',task2:'Әртүрлі денелерді суға салып, олардың жүзуін немесе батуын бақылау.',task3:'Денелердің тығыздығын сұйықтықтың тығыздығымен салыстыру.',task4:'Ауырлық күші мен Архимед күшінің арасындағы байланысты анықтау.',task5:'Өлшеудің абсолюттік және салыстырмалы қателігін есептеу.',task6:'Тәжірибе нәтижелерін интерактивті модельдің болжамдарымен салыстыру.',
+hypo:'Егер дененің тығыздығы сұйықтықтың тығыздығынан <b>үлкен</b> болса, дене <b>батады</b>. Егер дененің тығыздығы сұйықтықтың тығыздығынан <b>кіші</b> болса, дене <b>жүзеді</b>. Егер екі тығыздық <b>тең</b> болса, дене сұйықтың ішінде <b>қалқып тұрады</b>. Себебі мұны екі күш шешеді: денені төмен тартатын ауырлық күші және жоғары итеретін Архимед күші.',
+simpleTitle:'Қарапайым тілмен түсіндірсек',simple1:'Дененің тығыздығы сұйықтықтың тығыздығынан үлкен болса (ρ<sub>д</sub> &gt; ρ<sub>с</sub>) — дене батады. Мысалы, суда тас батады.',simple2:'Дененің тығыздығы сұйықтықтың тығыздығынан кіші болса (ρ<sub>д</sub> &lt; ρ<sub>с</sub>) — дене жүзеді. Мысалы, суда ағаш жүзеді.',simple3:'Екі тығыздық тең болса (ρ<sub>д</sub> = ρ<sub>с</sub>) — дене сұйықтың ортасында қалқып тұрады: батпайды да, жоғары шығып та кетпейді.',
+st_sink:'Дене батады',st_float:'Дене сұйық бетінде жүзеді',st_neutral:'Дене сұйық ішінде қалқып тұр',
+formulasTitle:'Негізгі формулалар',fgText:'Денеге әсер ететін ауырлық күші:',faText:'Архимед күші:',where:'Мұндағы:',
+w1:'<b>m</b> — дененің массасы [кг];',w2:'<b>g</b> — еркін түсу үдеуі (планета денені қаншалықты күшті тартады). Сенің планетаңда: <b class="gval"></b>;',w3:'<b>ρ<sub>с</sub></b> — сұйықтықтың тығыздығы [кг/м³];',w4:'<b>V<sub>бат</sub></b> — сұйыққа батқан бөліктің көлемі [м³].',
+quantity:'Шама',type:'Түрі',symbol:'Белгіленуі',independent:'Тәуелсіз шама',dependent:'Тәуелді шама',constant:'Тұрақты шама',
+v1:'Дененің тығыздығы',v2:'Сұйықтықтың тығыздығы',v3:'Дененің жүзу күйі',v4:'Батқан бөліктің көлемі',v5:'Ауырлық күші',v6:'Архимед күші',v7:'Еркін түсу үдеуі',v8:'Сұйықтың температурасы',v9:'Ыдыстың түрі',
+remember:'Есте сақта:',indExplain:'Өзіміз әдейі өзгертеміз (мысалы, басқа дене аламыз).',depExplain:'Біз өзгерткенге байланысты өзі өзгереді (мысалы, дене жүзеді не батады).',constExplain:'Бүкіл тәжірибеде бірдей болып қалады (мысалы, ыдыс).',
+safe1:'Шыны ыдыстарды абайлап пайдалану.',safe2:'Суды электр құралдарынан алыс ұстау.',safe3:'Сұйықтықты төгіп алмауға тырысу; төгілсе, дереу сүрту.',safe4:'Денелерді суға абайлап салу.',safe5:'Ауыр немесе өткір заттарды пайдаланбау.',safe6:'Құралдарды мұғалімнің нұсқауымен қолдану.',safe7:'Тәжірибе аяқталғаннан кейін жұмыс орнын жинау.',
+safetyNote:'Қауіпсіздік ережесін сақтамай тәжірибені бастамаңыз.',
+equipment:'Қажетті құралдар',hoverHint:'Құралдың үстіне меңзерді апарыңыз (телефонда басыңыз): ол қандай екенін және не үшін керек екенін көресіз.',
+eq1:'Су құйылған мөлдір ыдыс',eq2:'Әртүрлі материалдан жасалған денелер',eq3:'Таразы',eq4:'Мензурка',eq5:'Сызғыш',eq6:'Денелерді ұстауға арналған қысқыш',
+setupText:'Тәжірибеде әртүрлі денелерді суға салып, олардың жүзу күйін бақылаймыз. Қажет болса, массасын таразымен, көлемін мензуркамен өлшейміз. Дененің тығыздығы:',
+diagramNote:'Сызба — қондырғының шартты көрінісі.',diagV:'Мензурка',diagM:'Таразы',diagVessel:'Су құйылған ыдыс',
+tip_vessel_t:'Мөлдір ыдыс',tip_vessel_d:'Шыны стакан немесе ыдыс. Мөлдір болғандықтан, дененің су ішінде бататынын немесе жүзетінін көруге болады.',
+tip_liquid_t:'Сұйықтық',tip_liquid_d:'Тәжірибеге арналған сұйықтық: су, спирт, май, тұзды су және т.б. Әр сұйықтықтың өз тығыздығы бар.',
+tip_bodies_t:'Денелер',tip_bodies_d:'Әртүрлі материалдан жасалған денелер: жеңіл ағаш, қарағай, мұз, алюминий, темір. Олардың тығыздығы әртүрлі, сондықтан біреуі жүзеді, біреуі батады.',
+tip_scale_t:'Таразы',tip_scale_d:'Дененің массасын өлшейді. Массаны біліп және көлемге бөліп, тығыздықты есептейміз: ρ = m / V.',
+tip_cylinder_t:'Мензурка',tip_cylinder_d:'Көлемді өлшейтін шкаласы бар ыдыс. Денені мензуркадағы суға батырсақ, су деңгейінің өзгеруінен дененің көлемін табамыз.',
+tip_ruler_t:'Сызғыш',tip_ruler_d:'Ұзындықты өлшейді. Тікбұрышты дененің қабырғаларын өлшеп, көлемін есептеуге болады.',
+tip_tongs_t:'Қысқыш',tip_tongs_d:'Денені ұстап, суға абайлап салу немесе алу үшін қажет. Қолды сулатпауға және денені тамшылатпауға көмектеседі.',
+proc1:'Бірнеше түрлі денені таңдау.',proc2:'Әр дененің массасын таразымен өлшеу.',proc3:'Дененің көлемін өлшеу немесе анықтау.',proc4:'Дененің тығыздығын есептеу.',proc5:'Ыдысқа су құю.',proc6:'Денелерді кезекпен суға абайлап салу.',proc7:'Дененің бататынын, жүзетінін немесе сұйық ішінде қалқып тұратынын бақылау.',proc8:'Дененің тығыздығын судың тығыздығымен салыстыру.',proc9:'Нәтижелерді кестеге тіркеу.',proc10:'Тәжірибені кемінде бес түрлі денемен қайталап, қорытынды жасау.',
+thm:'m [кг]',thV:'V [см³]',thrho:'ρ<sub>д</sub> [кг/м³]',thrc:'ρ<sub>с</sub> [кг/м³]',thr:'r = ρ<sub>д</sub>/ρ<sub>с</sub>',thobs:'Бақыланған нәтиже',thref:'ρ<sub>эт</sub> [кг/м³]',thd:'Δρ [кг/м³]',theps:'ε [%]',
+obs0:'—',addRow:'+ Өлшеу қосу',fillExample:'Мысал деректерді енгізу',clear:'Кестені тазалау',
+tableNote:'ρ<sub>д</sub>, r, Δρ және ε бағандары автоматты есептеледі. Көлемді см³-пен енгізіңіз (1 см³ = 0,000001 м³). ρ<sub>эт</sub> — анықтамалықтағы (эталон) тығыздық. Бақыланған нәтиже тығыздықтар бойынша болжамға сәйкес келсе, ұяшық жасыл болады.',
+modelIntro:'Алдымен қондырғыны өзің жина. Содан кейін дененің тығыздығын, сұйықтықтың тығыздығын және дененің көлемін өзгертіп, дененің жүзу күйін болжа әрі тексер.',buildTitle:'1-қадам. Қондырғыны жина',trayTitle:'Бөлшектер:',pLiquid:'Сұйықтық',pBody:'Дене',
+msgStart:'Бөлшекті сахнаға сүйреп апар немесе оны бас. Реті: ыдыс → сұйықтық → дене. Таразы мен мензурканы да қой.',
+need_vessel:'Алдымен ыдысты қой, сұйықтық соған құйылады.',need_liquid:'Денені суға салу үшін сұйықтық керек. Алдымен сұйықтықты құй.',
+msgPlaced:'Дұрыс! Келесі бөлшекті ал.',msgReady:'Тамаша, қондырғы жиналды! Енді тығыздықтарды өзгертіп көр.',msgAlready:'Бұл бөлшек орнында тұр.',
+lockedNote:'Қондырғыны толық жинағанда ғана басқару ашылады.',resetBuild:'Қайта жинау',resetModel:'Бастапқы мәндерді қалпына келтіру',
+bodyLabel:'Дененің тығыздығы',liqLabel:'Сұйықтықтың тығыздығы',volLabel:'Дененің көлемі',custom:'Өз мәнім',rhoDRange:'100–8000 кг/м³',rhoCRange:'700–1400 кг/м³',volRange:'20–400 см³',
+predTitle:'Модельдің болжамы',ratioMetric:'Тығыздықтар қатынасы r',fracMetric:'Батқан көлемнің үлесі',fgMetric:'Ауырлық күші F ау',faMetric:'Толық батырғандағы Архимед күші',massMetric:'Таразы көрсетуі (m)',vReadMetric:'Мензурка көрсетуі (V)',
+modelCaveat:'Ескерту: бұл — жеңілдетілген модель. Батқан денеде Архимед күші ауырлық күшінен аз, сондықтан дене түбіне түседі. Жүзіп тұрған денеде екі күш тең.',
+stageNote:'Таразы массаны 1 г дәлдікпен, мензурка көлемді 3 см³ дәлдікпен көрсетеді. Сондықтан есептелген тығыздық эталоннан аздап ерекшеленеді.',legG:'Ауырлық күші ↓',legA:'Архимед күші ↑',
+recordBtn:'Өлшеуді кестеге жазу',recorded:'Кестеге жазылды (7-бөлім).',recordNote:'Таразы мен мензурканың көрсетуі және бақыланған нәтиже кестеге автоматты түседі.',
+resIntro:'Дененің жүзу шарттарын тығыздық арқылы анықтауға болады.',cond:'Шарт',forces:'Күштер',resTh:'Нәтиже',res1:'Дене батады',res2:'Дене сұйық бетінде жүзеді',res3:'Дене сұйық ішінде тепе-теңдікте қалқып тұра алады',
+eqText:'Дененің жүзу кезінде тепе-теңдік шарты:',graphTitleR:'Тығыздықтар қатынасы r',graphExplain:'r — дене тығыздығының сұйықтық тығыздығына қатынасы: дене сұйықтан неше есе тығыз екенін көрсетеді.',
+rl1:'r &lt; 1 — дененің тығыздығы сұйықтікінен аз: дене жүзеді;',rl2:'r = 1 — тығыздықтар тең: дене сұйықтың ішінде қалқып тұрады;',rl3:'r &gt; 1 — дененің тығыздығы сұйықтікінен көп: дене батады.',
+
+noData:'Кестеге кемінде бір өлшеу енгізіңіз (7-бөлім).',obsNo:'Өлшеу нөмірі',
+errTitle:'Өлшеу қателігін есептеу',errIntro:'Өлшеу әрқашан сәл дәл емес: таразы мен мензурка мінсіз емес. <b>Абсолюттік қателік Δρ</b> — сенің тығыздығың мен кестедегі тығыздықтың айырмасы (минус таңбасыз). <b>Салыстырмалы қателік ε</b> — осы айырма кестедегі мәннің неше пайызын құрайтынын көрсетеді. Есептеу үшін кестеге ρ<sub>эт</sub> (кестедегі мән) енгізілуі керек.',
+errAbs:'Орташа абсолюттік қателік Δρ',errRel:'Орташа салыстырмалы қателік ε',errMatch:'Болжам мен бақылау сәйкес',errNone:'Қателікті көру үшін кестеге ρ<sub>эт</sub> мәні бар өлшеу енгізіңіз.',errRes:'Тығыздықты өлшеу нәтижесі',
+cmpIntro:'Бұл екі нәтиже бөлек тіркеледі: модель болжамы және тәжірибедегі өлшеу.',modelPrediction:'Модельдің болжамы',modelPredictionText:'Модель тығыздықтарды салыстыру арқылы дененің жүзу күйін болжайды.',
+measuredValue:'Тәжірибеде өлшенген',measuredText:'Нақты тәжірибеде дененің массасы мен көлемі өлшенеді. Содан кейін денені суға салып, оның нақты жүзу күйі бақыланады.',
+compareTableTitle:'Салыстыру кестесі',indicator:'Көрсеткіш',cAbs:'Абсолюттік қателік Δ',cRel:'Салыстырмалы қателік ε [%]',cRho:'Дененің тығыздығы [кг/м³]',cRhoC:'Сұйықтықтың тығыздығы [кг/м³]',cState:'Жүзу күйі',cFA:'Архимед күші [Н]',
+match:'сәйкес келеді',nomatch:'сәйкес келмейді',notMeasured:'өлшенбейді',
+cmpImportant:'Есіңде болсын: Архимед күшін динамометрмен өлшемесең, «өлшедім» деп жазба. Кестеде оның модель бойынша есептелген мәні ғана тұр. Тәжірибеде тек дененің күйін (жүзді, батты, қалқып тұр) жазасың.',
+
+conclTitle:'Қорытынды',conclText1:'Зерттеу барысында дененің сұйықтықта жүзуі оның тығыздығына және сұйықтықтың тығыздығына байланысты екені анықталады. Дененің тығыздығы сұйықтықтың тығыздығынан аз болса, дене жүзеді; үлкен болса, батады; ал тығыздықтары тең болған жағдайда дене сұйық ішінде тепе-теңдікте қалқып тұра алады.',
+conclText2:'Сұйық денені жоғары итереді — бұл Архимед күші. Жер (немесе басқа планета) денені төмен тартады — бұл ауырлық күші. Дененің күйін осы екі күштің қатынасы шешеді.',conclMain:'Негізгі қорытынды: дене жүзе ме, бата ма — тығыздықтарды салыстырып білуге болады. Планета ауысса, күштер өзгереді, бірақ жүзу шарты өзгермейді.',
+studentTitle:'Қорытынды және жұмысты сақтау',conclusionLabel:'Қорытындыңызды жазыңыз',save:'Жұмысты сақтау және бекіту',restart:'Қайта бастау',needName:'Сақтау үшін жоғарыда оқушының аты-жөні мен сыныбын толтырыңыз.',saved:'Жұмыс сақталды және бекітілді.',confirmRestart:'Жұмысты тазалап, қайта бастайсыз ба?',
+footer:'Зертханалық жұмыс №7 • Жүзу шартын анықтау • Физика',
+danaName:'Дана',danaBubble:'Түсінбедің бе? Данадан сұра!',danaHello:'Сәлем! Мен Данамын, физика көмекшісімін. Бұл жұмыста нені түсінбесең, сұра!',danaPlaceholder:'Сұрағыңды жаз...',danaSend:'Жіберу',danaThinking:'Ойланып жатырмын...',
+chip1:'Тығыздық деген не?',chip2:'Дене қашан жүзеді?',chip3:'Қателікті қалай есептеймін?',chip4:'Модельді қалай жинаймын?'},
+ru:{w6:'<b>F<sub>A</sub></b> — сила Архимеда: жидкость выталкивает тело вверх [Н].',w5:'<b>F<sub>тяж</sub></b> — сила тяжести: тянет тело вниз [Н];',symNote:'ρ<sub>т</sub> — плотность тела, ρ<sub>ж</sub> — плотность жидкости.',planetNote:'Планету можно сменить в верхнем баннере. Если сменить планету, F<sub>тяж</sub> и F<sub>A</sub> изменятся, но плавает тело или тонет — не изменится: обе силы умножаются на одно и то же g.',gLess:'Притяжение в {x} раза слабее, чем на Земле',gMore:'Притяжение в {x} раза сильнее, чем на Земле',planetNow:'Ты сейчас:',planetHint:'Выбери планету: изменится цвет сайта, а в задачах будет использоваться g этой планеты.',planetAsk:'🚀 На какой планете ты сейчас?',tag:'Физика • 7 класс',title:'Лабораторная работа №7 «Определение условия плавания»',goal1:'исследовать условия плавания тел',goal2:'знать и соблюдать технику безопасности в кабинете физики',
+nav1:'Вопрос',nav2:'Цель',nav3:'Гипотеза',nav4:'Величины',nav5:'Безопасность',nav6:'Оборудование',nav7:'Измерения',nav8:'Модель',nav9:'Результат',nav10:'Сравнение',
+print:'🖨️ Печать',pdf:'📄 Сохранить в PDF',pdfhint:'Для сохранения PDF выберите «Save as PDF / Сохранить как PDF» в окне печати.',
+studentTopTitle:'Данные ученика',studentName:'ФИО ученика',studentClass:'Класс',studentMass:'Масса ученика, кг',
+s1:'Исследовательский вопрос',s2:'Цель и задачи исследования',s3:'Гипотеза и физическое обоснование',s4:'Независимые, зависимые и постоянные величины',s5:'Правила безопасности',s6:'Оборудование и схема установки',s7:'Порядок измерений и таблица результатов',s8:'Интерактивная модель',s9:'Результат и формулы',s10:'Прогноз модели и значение, измеренное в опыте',
+q1:'Как плотность тела и плотность жидкости влияют на то, будет ли тело плавать, тонуть или находиться во взвешенном состоянии внутри жидкости?',
+questionSimple:'<b>Простыми словами:</b> почему камень в воде тонет, а пробка плавает? Как узнать это заранее?',
+aimlabel:'Цель исследования:',aimtext:'Экспериментально изучить условия плавания тел в жидкости и определить влияние плотности тела и плотности жидкости.',tasks:'Задачи',
+task1:'Рассмотреть теоретические сведения об условиях плавания тел и силе Архимеда.',task2:'Опускать разные тела в воду и наблюдать, плавают они или тонут.',task3:'Сравнивать плотность тел с плотностью жидкости.',task4:'Определить связь между силой тяжести и силой Архимеда.',task5:'Вычислить абсолютную и относительную погрешность измерений.',task6:'Сравнить результаты опыта с прогнозами интерактивной модели.',
+hypo:'Если плотность тела <b>больше</b> плотности жидкости, тело <b>тонет</b>. Если плотность тела <b>меньше</b> плотности жидкости, тело <b>плавает</b>. Если плотности <b>равны</b>, тело <b>висит</b> внутри жидкости. Причина одна: всё решают две силы — сила тяжести тянет тело вниз, а сила Архимеда выталкивает вверх.',
+simpleTitle:'Простыми словами',simple1:'Плотность тела больше плотности жидкости — тело тонет. Например, камень в воде.',simple2:'Плотность тела меньше плотности жидкости — тело плавает. Например, пробка в воде.',simple3:'Плотности равны — тело висит в середине жидкости: не тонет и не всплывает.',
+st_sink:'Тело тонет',st_float:'Тело плавает на поверхности',st_neutral:'Тело взвешено внутри жидкости',
+formulasTitle:'Основные формулы',fgText:'Сила тяжести, действующая на тело:',faText:'Сила Архимеда:',where:'Где:',
+w1:'<b>m</b> — масса тела [кг];',w2:'<b>g</b> — ускорение свободного падения (насколько сильно планета притягивает тело). На твоей планете: <b class="gval"></b>;',w3:'<b>ρ<sub>с</sub></b> — плотность жидкости [кг/м³];',w4:'<b>V<sub>бат</sub></b> — объём погружённой части тела [м³].',
+quantity:'Величина',type:'Тип',symbol:'Обозначение',independent:'Независимая величина',dependent:'Зависимая величина',constant:'Постоянная величина',
+v1:'Плотность тела',v2:'Плотность жидкости',v3:'Состояние тела (плавает/тонет)',v4:'Объём погружённой части',v5:'Сила тяжести',v6:'Сила Архимеда',v7:'Ускорение свободного падения',v8:'Температура жидкости',v9:'Вид сосуда',
+remember:'Запомни:',indExplain:'Мы меняем её сами, специально (например, берём другое тело).',depExplain:'Меняется сама из-за наших изменений (например, тело плавает или тонет).',constExplain:'Остаётся одинаковой во всём опыте (например, сосуд).',
+safe1:'Аккуратно пользоваться стеклянной посудой.',safe2:'Держать воду подальше от электроприборов.',safe3:'Стараться не проливать жидкость; если пролилась, сразу вытереть.',safe4:'Осторожно опускать тела в воду.',safe5:'Не использовать тяжёлые или острые предметы.',safe6:'Пользоваться приборами по указанию учителя.',safe7:'После опыта убрать рабочее место.',
+safetyNote:'Не начинайте опыт без соблюдения правил безопасности.',
+equipment:'Необходимое оборудование',hoverHint:'Наведите курсор на предмет (на телефоне нажмите): увидите, как он выглядит и для чего нужен.',
+eq1:'Прозрачный сосуд с водой',eq2:'Тела из разных материалов',eq3:'Весы',eq4:'Мензурка',eq5:'Линейка',eq6:'Щипцы для удержания тел',
+setupText:'В опыте мы опускаем разные тела в воду и наблюдаем их состояние. При необходимости измеряем массу весами, объём мензуркой. Плотность тела:',
+diagramNote:'Схематичное изображение установки.',diagV:'Мензурка',diagM:'Весы',diagVessel:'Сосуд с водой',
+tip_vessel_t:'Прозрачный сосуд',tip_vessel_d:'Стеклянный стакан или сосуд. Он прозрачный, поэтому видно, тонет тело в воде или плавает.',
+tip_liquid_t:'Жидкость',tip_liquid_d:'Жидкость для опыта: вода, спирт, масло, солёная вода и др. У каждой жидкости своя плотность.',
+tip_bodies_t:'Тела',tip_bodies_d:'Тела из разных материалов: пробка, дерево, лёд, алюминий, железо. У них разная плотность, поэтому одни плавают, другие тонут.',
+tip_scale_t:'Весы',tip_scale_d:'Измеряют массу тела. Зная массу и разделив на объём, находим плотность: ρ = m / V.',
+tip_cylinder_t:'Мензурка',tip_cylinder_d:'Сосуд со шкалой для измерения объёма. Если опустить тело в воду в мензурке, по изменению уровня воды находим объём тела.',
+tip_ruler_t:'Линейка',tip_ruler_d:'Измеряет длину. Измерив стороны тела правильной формы, можно вычислить его объём.',
+tip_tongs_t:'Щипцы',tip_tongs_d:'Нужны, чтобы держать тело и осторожно опускать в воду или доставать. Помогают не мочить руки и не разбрызгивать воду.',
+proc1:'Выбрать несколько разных тел.',proc2:'Измерить массу каждого тела весами.',proc3:'Измерить или определить объём тела.',proc4:'Вычислить плотность тела.',proc5:'Налить воду в сосуд.',proc6:'Поочерёдно осторожно опускать тела в воду.',proc7:'Наблюдать: тело тонет, плавает или находится внутри жидкости во взвешенном состоянии.',proc8:'Сравнить плотность тела с плотностью воды.',proc9:'Записать результаты в таблицу.',proc10:'Повторить опыт не менее чем с пятью разными телами и сделать вывод.',
+thm:'m [кг]',thV:'V [см³]',thrho:'ρ<sub>т</sub> [кг/м³]',thrc:'ρ<sub>ж</sub> [кг/м³]',thr:'r = ρ<sub>т</sub>/ρ<sub>ж</sub>',thobs:'Наблюдаемый результат',thref:'ρ<sub>табл</sub> [кг/м³]',thd:'Δρ [кг/м³]',theps:'ε [%]',
+obs0:'—',addRow:'+ Добавить измерение',fillExample:'Заполнить примером',clear:'Очистить таблицу',
+tableNote:'Столбцы ρ<sub>т</sub>, r, Δρ и ε вычисляются автоматически. Объём вводите в см³ (1 см³ = 0,000001 м³). ρ<sub>табл</sub> — табличное значение плотности. Если наблюдение совпадает с прогнозом по плотностям, ячейка станет зелёной.',
+modelIntro:'Сначала соберите установку сами. Затем меняйте плотность тела, плотность жидкости и объём тела, предсказывайте состояние тела и проверяйте.',buildTitle:'Шаг 1. Соберите установку',trayTitle:'Детали:',pLiquid:'Жидкость',pBody:'Тело',
+msgStart:'Перетащите деталь на сцену или нажмите на неё. Порядок: сосуд → жидкость → тело. Не забудьте весы и мензурку.',
+need_vessel:'Сначала поставьте сосуд: в него наливают жидкость.',need_liquid:'Чтобы опустить тело, нужна жидкость. Сначала налейте жидкость.',
+msgPlaced:'Верно! Берите следующую деталь.',msgReady:'Отлично, установка собрана! Теперь меняйте плотности.',msgAlready:'Эта деталь уже на месте.',
+lockedNote:'Управление откроется, когда установка будет собрана полностью.',resetBuild:'Собрать заново',resetModel:'Вернуть начальные значения',
+bodyLabel:'Плотность тела',liqLabel:'Плотность жидкости',volLabel:'Объём тела',custom:'Своё значение',rhoDRange:'100–8000 кг/м³',rhoCRange:'700–1400 кг/м³',volRange:'20–400 см³',
+predTitle:'Прогноз модели',ratioMetric:'Отношение плотностей r',fracMetric:'Доля погружённого объёма',fgMetric:'Сила тяжести F тяж',faMetric:'Сила Архимеда при полном погружении',massMetric:'Показание весов (m)',vReadMetric:'Показание мензурки (V)',
+modelCaveat:'Важно: это упрощённая модель. У утонувшего тела сила Архимеда меньше силы тяжести, поэтому оно опускается на дно. У плавающего тела эти силы равны.',
+stageNote:'Весы показывают массу с точностью до 1 г, мензурка объём с точностью до 3 см³. Поэтому вычисленная плотность немного отличается от табличной.',legG:'Сила тяжести ↓',legA:'Сила Архимеда ↑',
+recordBtn:'Записать измерение в таблицу',recorded:'Записано в таблицу (раздел 7).',recordNote:'Показания весов и мензурки и наблюдаемый результат попадают в таблицу автоматически.',
+resIntro:'Условия плавания тела можно определить по плотности.',cond:'Условие',forces:'Силы',resTh:'Результат',res1:'Тело тонет',res2:'Тело плавает на поверхности',res3:'Тело может находиться внутри жидкости в равновесии',
+eqText:'Условие равновесия при плавании тела:',graphTitleR:'Отношение плотностей r',graphExplain:'r — отношение плотности тела к плотности жидкости: показывает, во сколько раз тело плотнее жидкости.',
+rl1:'r &lt; 1 — плотность тела меньше плотности жидкости: тело плавает;',rl2:'r = 1 — плотности равны: тело висит внутри жидкости;',rl3:'r &gt; 1 — плотность тела больше плотности жидкости: тело тонет.',
+
+noData:'Введите в таблицу хотя бы одно измерение (раздел 7).',obsNo:'Номер измерения',
+errTitle:'Расчёт погрешности измерений',errIntro:'Измерение всегда немного неточное: весы и мензурка не идеальны. <b>Абсолютная погрешность Δρ</b> — на сколько твоя плотность отличается от табличной (без знака минус). <b>Относительная погрешность ε</b> — какой процент от табличного значения составляет эта разница. Чтобы посчитать, введи в таблицу ρ<sub>табл</sub> (табличное значение).',
+errAbs:'Средняя абсолютная погрешность Δρ',errRel:'Средняя относительная погрешность ε',errMatch:'Прогноз и наблюдение совпали',errNone:'Введите измерение со значением ρ<sub>табл</sub>, чтобы увидеть погрешность.',errRes:'Результат измерения плотности',
+cmpIntro:'Эти два результата фиксируются отдельно: прогноз модели и измерение в опыте.',modelPrediction:'Прогноз модели',modelPredictionText:'Модель предсказывает состояние тела, сравнивая плотности.',
+measuredValue:'Измеренное в опыте',measuredText:'В реальном опыте измеряют массу и объём тела. Затем опускают тело в воду и наблюдают его реальное состояние.',
+compareTableTitle:'Таблица сравнения',indicator:'Показатель',cAbs:'Абсолютная погрешность Δ',cRel:'Относительная погрешность ε [%]',cRho:'Плотность тела [кг/м³]',cRhoC:'Плотность жидкости [кг/м³]',cState:'Состояние тела',cFA:'Сила Архимеда [Н]',
+match:'совпадает',nomatch:'не совпадает',notMeasured:'не измерялась',
+cmpImportant:'Запомни: если ты не измерял силу Архимеда динамометром, не пиши, что измерил. В таблице стоит только значение, посчитанное по модели. В опыте ты записываешь только состояние тела (плавает, тонет, висит).',
+
+conclTitle:'Вывод',conclText1:'В ходе исследования выясняется, что плавание тела в жидкости зависит от его плотности и плотности жидкости. Если плотность тела меньше плотности жидкости, тело плавает; если больше, тонет; если плотности равны, тело может находиться внутри жидкости в равновесии.',
+conclText2:'Жидкость выталкивает тело вверх — это сила Архимеда. Земля (или другая планета) тянет тело вниз — это сила тяжести. Состояние тела решает соотношение этих двух сил.',conclMain:'Главный вывод: плавает тело или тонет, можно узнать, сравнив плотности. Если сменить планету, силы изменятся, но условие плавания останется тем же.',
+studentTitle:'Вывод и сохранение работы',conclusionLabel:'Напишите вывод',save:'Сохранить и заблокировать работу',restart:'Начать заново',needName:'Чтобы сохранить, заполните ФИО и класс вверху страницы.',saved:'Работа сохранена и заблокирована.',confirmRestart:'Очистить работу и начать заново?',
+footer:'Лабораторная работа №7 • Определение условия плавания • Физика',
+danaName:'Дана',danaBubble:'Не понятно? Спроси у Даны!',danaHello:'Привет! Я Дана, помощница по физике. Если что-то непонятно в этой работе, спрашивай!',danaPlaceholder:'Напиши вопрос...',danaSend:'Отправить',danaThinking:'Думаю...',
+chip1:'Что такое плотность?',chip2:'Когда тело плавает?',chip3:'Как посчитать погрешность?',chip4:'Как собрать модель?'},
+en:{w6:'<b>F<sub>A</sub></b> — Archimedes force: the liquid pushes the body up [N].',w5:'<b>F<sub>g</sub></b> — gravity: pulls the body down [N];',symNote:'ρ<sub>b</sub> — density of the body, ρ<sub>l</sub> — density of the liquid.',planetNote:'You can change the planet in the top banner. A new planet changes F<sub>g</sub> and F<sub>A</sub>, but not whether the body floats or sinks: both forces are multiplied by the same g.',gLess:'gravity {x} times weaker than on Earth',gMore:'gravity {x} times stronger than on Earth',planetNow:'You are on:',planetHint:'Pick a planet: the site colours change, and the problems use that planet’s g.',planetAsk:'🚀 Which planet are you on?',tag:'Physics • Grade 7',title:'Lab work No. 7 “Determining the condition for floating”',goal1:'investigate the conditions for floating of bodies',goal2:'know and follow safety rules in the physics lab',
+nav1:'Question',nav2:'Aim',nav3:'Hypothesis',nav4:'Variables',nav5:'Safety',nav6:'Equipment',nav7:'Measurements',nav8:'Model',nav9:'Results',nav10:'Comparison',
+print:'🖨️ Print',pdf:'📄 Save as PDF',pdfhint:'To save a PDF, choose “Save as PDF” in the print dialog.',
+studentTopTitle:'Student details',studentName:'Student name',studentClass:'Class',studentMass:'Student mass, kg',
+s1:'Research question',s2:'Aim and objectives',s3:'Hypothesis and physical explanation',s4:'Independent, dependent and controlled variables',s5:'Safety rules',s6:'Equipment and setup diagram',s7:'Measurement procedure and results table',s8:'Interactive model',s9:'Results and formulas',s10:'Model prediction and experimentally measured value',
+q1:'How do the density of a body and the density of a liquid affect whether the body floats, sinks or hangs suspended inside the liquid?',
+questionSimple:'<b>In simple words:</b> why does a stone sink in water while a cork floats? How can we tell in advance?',
+aimlabel:'Research aim:',aimtext:'Investigate experimentally the conditions for floating of bodies in a liquid and determine the effect of the body’s density and the liquid’s density.',tasks:'Objectives',
+task1:'Review the theory of floating conditions and the Archimedes force.',task2:'Place different bodies in water and observe whether they float or sink.',task3:'Compare the density of bodies with the density of the liquid.',task4:'Find the relationship between the force of gravity and the Archimedes force.',task5:'Calculate the absolute and relative error of the measurements.',task6:'Compare experimental results with the predictions of the interactive model.',
+hypo:'If the body’s density is <b>greater</b> than the liquid’s density, the body <b>sinks</b>. If it is <b>less</b>, the body <b>floats</b>. If the two densities are <b>equal</b>, the body <b>hangs</b> inside the liquid. The reason is two forces: gravity pulls the body down and the Archimedes force pushes it up.',
+simpleTitle:'In simple words',simple1:'The body is denser than the liquid — it sinks. For example, a stone in water.',simple2:'The body is less dense than the liquid — it floats. For example, a cork in water.',simple3:'The densities are equal — the body hangs in the middle of the liquid: it neither sinks nor rises.',
+st_sink:'The body sinks',st_float:'The body floats on the surface',st_neutral:'The body hangs suspended in the liquid',
+formulasTitle:'Key formulas',fgText:'Force of gravity acting on the body:',faText:'Archimedes force:',where:'Where:',
+w1:'<b>m</b> — mass of the body [kg];',w2:'<b>g</b> — free-fall acceleration (how strongly the planet pulls the body). On your planet: <b class="gval"></b>;',w3:'<b>ρ<sub>с</sub></b> — density of the liquid [kg/m³];',w4:'<b>V<sub>бат</sub></b> — volume of the submerged part [m³].',
+quantity:'Quantity',type:'Type',symbol:'Symbol',independent:'Independent variable',dependent:'Dependent variable',constant:'Controlled variable',
+v1:'Density of the body',v2:'Density of the liquid',v3:'Floating state',v4:'Volume of the submerged part',v5:'Force of gravity',v6:'Archimedes force',v7:'Free-fall acceleration',v8:'Liquid temperature',v9:'Type of container',
+remember:'Remember:',indExplain:'We change it ourselves.',depExplain:'It changes because of that.',constExplain:'We keep it the same during the experiment.',
+safe1:'Handle glassware carefully.',safe2:'Keep water away from electrical equipment.',safe3:'Try not to spill liquid; if you do, wipe it up immediately.',safe4:'Lower bodies into the water carefully.',safe5:'Do not use heavy or sharp objects.',safe6:'Use equipment only as the teacher instructs.',safe7:'Tidy your workplace after the experiment.',
+safetyNote:'Do not start the experiment without following the safety rules.',
+equipment:'Required equipment',hoverHint:'Hover over an item (tap on a phone) to see what it looks like and what it is for.',
+eq1:'Transparent container with water',eq2:'Bodies made of different materials',eq3:'Balance',eq4:'Measuring cylinder',eq5:'Ruler',eq6:'Tongs for holding bodies',
+setupText:'In the experiment we place different bodies in water and observe their state. If needed, we measure mass with the balance and volume with the measuring cylinder. Density of the body:',
+diagramNote:'Schematic setup.',diagV:'Cylinder',diagM:'Balance',diagVessel:'Container with water',
+tip_vessel_t:'Transparent container',tip_vessel_d:'A glass beaker or vessel. Being transparent, it lets us see whether a body sinks or floats.',
+tip_liquid_t:'Liquid',tip_liquid_d:'The liquid for the experiment: water, alcohol, oil, salt water, etc. Each liquid has its own density.',
+tip_bodies_t:'Bodies',tip_bodies_d:'Bodies of different materials: cork, wood, ice, aluminium, iron. Their densities differ, so some float and some sink.',
+tip_scale_t:'Balance',tip_scale_d:'Measures the mass of a body. Knowing the mass and dividing by the volume gives the density: ρ = m / V.',
+tip_cylinder_t:'Measuring cylinder',tip_cylinder_d:'A vessel with a scale for measuring volume. Lower a body into the water and the rise of the level gives the body’s volume.',
+tip_ruler_t:'Ruler',tip_ruler_d:'Measures length. By measuring the sides of a regular body you can calculate its volume.',
+tip_tongs_t:'Tongs',tip_tongs_d:'Used to hold a body and lower it into the water or take it out carefully, without wetting your hands or splashing.',
+proc1:'Choose several different bodies.',proc2:'Measure the mass of each body with the balance.',proc3:'Measure or determine the volume of the body.',proc4:'Calculate the density of the body.',proc5:'Pour water into the container.',proc6:'Lower the bodies into the water one by one, carefully.',proc7:'Observe whether the body sinks, floats or hangs suspended in the liquid.',proc8:'Compare the density of the body with the density of water.',proc9:'Record the results in the table.',proc10:'Repeat with at least five different bodies and draw a conclusion.',
+thm:'m [kg]',thV:'V [cm³]',thrho:'ρ<sub>b</sub> [kg/m³]',thrc:'ρ<sub>l</sub> [kg/m³]',thr:'r = ρ<sub>b</sub>/ρ<sub>l</sub>',thobs:'Observed result',thref:'ρ<sub>ref</sub> [kg/m³]',thd:'Δρ [kg/m³]',theps:'ε [%]',
+obs0:'—',addRow:'+ Add measurement',fillExample:'Fill example data',clear:'Clear table',
+tableNote:'The ρ<sub>b</sub>, r, Δρ and ε columns are calculated automatically. Enter volume in cm³ (1 cm³ = 0.000001 m³). ρ<sub>ref</sub> is the reference (table) density. If the observation matches the prediction from the densities, the cell turns green.',
+modelIntro:'First build the setup yourself. Then change the density of the body, the density of the liquid and the volume of the body, predict the body’s state and check it.',buildTitle:'Step 1. Build the setup',trayTitle:'Parts:',pLiquid:'Liquid',pBody:'Body',
+msgStart:'Drag a part onto the stage or tap it. Order: container → liquid → body. Do not forget the balance and the cylinder.',
+need_vessel:'Place the container first: the liquid is poured into it.',need_liquid:'To lower a body you need a liquid. Pour the liquid first.',
+msgPlaced:'Correct! Take the next part.',msgReady:'Great, the setup is built! Now change the densities.',msgAlready:'This part is already in place.',
+lockedNote:'The controls unlock once the setup is fully built.',resetBuild:'Rebuild',resetModel:'Reset to initial values',
+bodyLabel:'Density of the body',liqLabel:'Density of the liquid',volLabel:'Volume of the body',custom:'My own value',rhoDRange:'100–8000 kg/m³',rhoCRange:'700–1400 kg/m³',volRange:'20–400 cm³',
+predTitle:'Model prediction',ratioMetric:'Density ratio r',fracMetric:'Submerged volume fraction',fgMetric:'Force of gravity F',faMetric:'Archimedes force when fully submerged',massMetric:'Balance reading (m)',vReadMetric:'Cylinder reading (V)',
+modelCaveat:'This is an idealized model. For a sinking body the Archimedes force when fully submerged may be less than its weight; for a floating body in equilibrium the two forces are equal.',
+stageNote:'The balance shows mass to 1 g and the cylinder shows volume to 3 cm³, so the calculated density differs slightly from the reference value.',legG:'Gravity ↓',legA:'Archimedes force ↑',
+recordBtn:'Record measurement in table',recorded:'Recorded in the table (section 7).',recordNote:'The balance and cylinder readings and the observed result go into the table automatically.',
+resIntro:'The conditions for floating can be determined from density.',cond:'Condition',forces:'Forces',resTh:'Result',res1:'The body sinks',res2:'The body floats on the surface',res3:'The body can hang in equilibrium inside the liquid',
+eqText:'Equilibrium condition for a floating body:',graphTitleR:'Density ratio r',graphExplain:'For a clear picture, compare the ratio of the body’s density to the liquid’s density with the body’s state.',
+rl1:'r < 1 — floats;',rl2:'r = 1 — neutral buoyancy;',rl3:'r > 1 — sinks.',
+
+noData:'Enter at least one measurement in the table (section 7).',obsNo:'Measurement number',
+errTitle:'Calculating measurement error',errIntro:'The absolute error Δρ is the difference (without sign) between the measured and the reference density. The relative error ε is Δρ divided by the reference value, in percent. The table must contain ρ<sub>ref</sub> for this.',
+errAbs:'Mean absolute error Δρ',errRel:'Mean relative error ε',errMatch:'Prediction and observation agree',errNone:'Enter a measurement with a ρ<sub>ref</sub> value to see the error.',errRes:'Density measurement result',
+cmpIntro:'These two results are recorded separately: the model prediction and the measurement in the experiment.',modelPrediction:'Model prediction',modelPredictionText:'The model predicts the state of the body by comparing densities.',
+measuredValue:'Measured in the experiment',measuredText:'In a real experiment the mass and volume of the body are measured. Then the body is placed in water and its real state is observed.',
+compareTableTitle:'Comparison table',indicator:'Indicator',cAbs:'Absolute error Δ',cRel:'Relative error ε [%]',cRho:'Density of the body [kg/m³]',cRhoC:'Density of the liquid [kg/m³]',cState:'Floating state',cFA:'Archimedes force [N]',
+match:'agrees',nomatch:'does not agree',notMeasured:'not measured',
+cmpImportant:'Important: if no dynamometer experiment was done to measure the Archimedes force, do not present it as a measured quantity. In that case give only the force calculated by the model in the table, and record the body’s state in the experiment.',
+
+conclTitle:'Conclusion',conclText1:'The investigation shows that whether a body floats in a liquid depends on its density and on the density of the liquid. If the body’s density is less than the liquid’s, it floats; if greater, it sinks; if the densities are equal, it can hang in equilibrium inside the liquid.',
+conclText2:'The Archimedes force acts upward on a body immersed in a liquid. Whether the body floats depends on the ratio of the force of gravity to the Archimedes force.',conclMain:'Main conclusion: the conditions for floating can be determined by comparing densities and studying the force of gravity and the Archimedes force.',
+studentTitle:'Conclusion and saving your work',conclusionLabel:'Write your conclusion',save:'Save and lock work',restart:'Start over',needName:'To save, fill in your name and class at the top of the page.',saved:'Work saved and locked.',confirmRestart:'Clear the work and start over?',
+footer:'Lab work No. 7 • Determining the condition for floating • Physics',
+danaName:'Dana',danaBubble:'Stuck? Ask Dana!',danaHello:'Hi! I’m Dana, your physics helper. Ask me anything in this lab that is not clear!',danaPlaceholder:'Type your question...',danaSend:'Send',danaThinking:'Thinking...',
+chip1:'What is density?',chip2:'When does a body float?',chip3:'How do I calculate the error?',chip4:'How do I build the model?'}
+};
+function lang(){return $('language').value}
+function tr(k){return (T[lang()]&&T[lang()][k])||T.kk[k]||k}
+function fmt(n,d=3){return Number.isFinite(n)?n.toFixed(d).replace('.',','):'—'}
+function U(){const en=lang()==='en';return{kg:en?'kg':'кг',g:en?'g':'г',cm3:en?'cm³':'см³',kgm3:en?'kg/m³':'кг/м³',N:en?'N':'Н',Nkg:en?'N/kg':'Н/кг'}}
+function nm(o){return o[lang()]||o.kk}
+
+/* ================= Tooltips ================= */
+const tip=$('tip');
+function showTip(el,ev){
+  const k=el.dataset.tip;if(!ART[k])return;
+  tip.querySelector('.art').innerHTML=ART[k];tip.querySelector('b').textContent=tr('tip_'+k+'_t');tip.querySelector('p').textContent=tr('tip_'+k+'_d');
+  const r=el.getBoundingClientRect(),w=268,h=250;
+  let x=ev&&ev.clientX!=null&&ev.type!=='focusin'?ev.clientX+16:r.right+10,y=ev&&ev.clientY!=null&&ev.type!=='focusin'?ev.clientY+16:r.top;
+  if(x+w>innerWidth-8)x=Math.max(8,(ev&&ev.clientX!=null?ev.clientX:r.left)-w-16);
+  if(y+h>innerHeight-8)y=Math.max(8,innerHeight-h-8);
+  tip.style.left=x+'px';tip.style.top=y+'px';tip.classList.add('on');
+}
+function hideTip(){tip.classList.remove('on')}
+document.addEventListener('mouseover',e=>{const el=e.target.closest&&e.target.closest('[data-tip]');el?showTip(el,e):hideTip()});
+document.addEventListener('mousemove',e=>{if(tip.classList.contains('on')){const el=e.target.closest&&e.target.closest('[data-tip]');if(el)showTip(el,e)}});
+document.addEventListener('focusin',e=>{const el=e.target.closest&&e.target.closest('[data-tip]');el?showTip(el,e):hideTip()});
+document.addEventListener('focusout',hideTip);
+document.addEventListener('click',e=>{const el=e.target.closest&&e.target.closest('[data-tip]');if(el&&matchMedia('(hover:none)').matches)showTip(el,e);else if(!el)hideTip()});
+document.addEventListener('dragstart',hideTip);
+
+/* ================= Data ================= */
+const MAT=[{k:79,col:'#5b6b82',kk:'Болат',ru:'Сталь',en:'Steel'},{k:44,col:'#c2703a',kk:'Мыс',ru:'Медь',en:'Copper'},{k:41,col:'#4f8fb5',kk:'Титан',ru:'Титан',en:'Titanium'},{k:37,col:'#c99a1e',kk:'Жез',ru:'Латунь',en:'Brass'},{k:26,col:'#9aa7b8',kk:'Алюминий',ru:'Алюминий',en:'Aluminium'},{k:17,col:'#5fa56f',kk:'Магний',ru:'Магний',en:'Magnesium'}];
+const PLN=[
+{g:3.70,kk:'Меркурий',ru:'Меркурий',en:'Mercury',t:['#3a2f2a','#8c7a6e','#7a5c4d','#f4f0ee','#ece5e0','#f8f5f3','#ddd3cc'],c:['#b9aca2','#6f6158']},
+{g:8.87,kk:'Шолпан',ru:'Венера',en:'Venus',t:['#7a4a05','#e3a53a','#a8650a','#fff6e8','#fdecd0','#fff9ef','#f0d9b0'],c:['#ffe0a0','#d9923a']},
+{g:9.80,kk:'Жер',ru:'Земля',en:'Earth',t:['#142a66','#3157e0','#3157e0','#eef2fb','#eef3ff','#f6f8fe','#d9e1f2'],c:['#5aa0ff','#1f7a4d']},
+{g:1.62,kk:'Ай',ru:'Луна',en:'Moon',t:['#2b2f3a','#7b8499','#4b5870','#f1f2f5','#eceef3','#f6f7f9','#d7dbe3'],c:['#e6e6ea','#8d8f99']},
+{g:3.71,kk:'Марс',ru:'Марс',en:'Mars',t:['#4a140c','#cf4a2a','#bf3b1b','#fdf0ea','#fbe0d5','#fff7f3','#f0cdbd'],c:['#ff9a73','#a8321a']},
+{g:24.79,kk:'Юпитер',ru:'Юпитер',en:'Jupiter',t:['#5b2e14','#c98a52','#a8591c','#fcf3ea','#f8e4d0','#fff8f1','#ecd3b8'],c:['#f0c08a','#a4622d']},
+{g:10.44,kk:'Сатурн',ru:'Сатурн',en:'Saturn',t:['#4f4318','#c9ad63','#8a6d1f','#faf6ea','#f4ecd2','#fdfaf1','#e6dab4'],c:['#f2dfa0','#b79a50']},
+{g:8.69,kk:'Уран',ru:'Уран',en:'Uranus',t:['#0b4f5c','#4fd0d6','#0f8a96','#eafafb','#d8f3f5','#f3fcfd','#bfe4e8'],c:['#c9f5f7','#4ab8c4']},
+{g:11.15,kk:'Нептун',ru:'Нептун',en:'Neptune',t:['#1a1466','#4a6bff','#3b4fd8','#eceeff','#dfe3ff','#f5f6ff','#cfd4f5'],c:['#8fa5ff','#2a3fc0']}];
+let curPl=2;
+
+/* ================= Planet fun facts ================= */
+const FACTS=[
+{kk:[['☀️','Меркурийде жыл небәрі 88 жер тәулігіне созылады, ал бір тәулік (күннің шығуынан келесі шығуына дейін) — 176 жер тәулігі!'],['🌡️','Атмосферасы жоқтың қасы, сондықтан түнде −180 °C-қа дейін қатады, күндіз +430 °C-қа дейін қызады.'],['🏀','Ол — ең кіші планета, диаметрі Айдан небәрі 1,4 есе үлкен. Ауырлық күші Марстағыдай әлсіз.']],
+ ru:[['☀️','На Меркурии год длится всего 88 земных суток, а одни сутки (от рассвета до рассвета) — целых 176 земных суток!'],['🌡️','Атмосферы почти нет, поэтому ночью там −180 °C, а днём до +430 °C.'],['🏀','Это самая маленькая планета: её диаметр всего в 1,4 раза больше лунного. Притяжение там такое же слабое, как на Марсе.']],
+ en:[['☀️','A year on Mercury lasts just 88 Earth days, but one day (sunrise to sunrise) lasts a whole 176 Earth days!'],['🌡️','There is almost no atmosphere, so it drops to −180 °C at night and heats up to +430 °C by day.'],['🏀','It is the smallest planet — only about 1.4 times wider than the Moon. Its gravity is as weak as on Mars.']]},
+{kk:[['🔥','Шолпан — Күн жүйесіндегі ең ыстық планета: бетінде шамамен +465 °C. Мұнда қорғасын да ери бастайды!'],['🔄','Ол басқа планеталарға қарама-қарсы бағытта айналады, сондықтан Күн батыстан шығады. Бір тәулігі (243 жер тәулігі) жылынан (225 тәулік) ұзағырақ.'],['🌫️','Бетіндегі қысым Жердегіден шамамен 90 есе жоғары — теңіздегі 900 м тереңдіктегідей.']],
+ ru:[['🔥','Венера — самая горячая планета Солнечной системы: на поверхности около +465 °C. Там плавится даже свинец!'],['🔄','Она вращается в обратную сторону, поэтому Солнце там встаёт на западе. Сутки (243 земных) длиннее года (225 земных суток).'],['🌫️','Давление на поверхности примерно в 90 раз больше земного — как на глубине 900 м в океане.']],
+ en:[['🔥','Venus is the hottest planet in the Solar System: about +465 °C at the surface. Even lead would melt there!'],['🔄','It spins backwards, so the Sun rises in the west. One day (243 Earth days) is longer than its year (225 Earth days).'],['🌫️','The pressure at the surface is about 90 times that of Earth — like being 900 m deep in the ocean.']]},
+{kk:[['💧','Жер бетінің шамамен 71 %-ын су алып жатыр. Біз білетін өмір бар жалғыз планета!'],['🪨','Жер — Күн жүйесіндегі ең тығыз планета: орташа тығыздығы шамамен 5510 кг/м³, яғни судан 5,5 есе тығыз.'],['🚢','Болат кеме судан ауыр материалдан жасалса да жүзеді: оның орташа тығыздығы судан аз, өйткені ішінде көбіне ауа бар. Бұл — Архимед күшінің жұмысы!']],
+ ru:[['💧','Около 71 % поверхности Земли покрыто водой. Это единственная известная нам планета с жизнью!'],['🪨','Земля — самая плотная планета Солнечной системы: средняя плотность около 5510 кг/м³, то есть в 5,5 раза плотнее воды.'],['🚢','Стальной корабль плавает, хотя сталь тяжелее воды: его средняя плотность меньше плотности воды, ведь внутри в основном воздух. Это работа силы Архимеда!']],
+ en:[['💧','About 71 % of Earth’s surface is covered by water. It is the only planet known to have life!'],['🪨','Earth is the densest planet in the Solar System: average density about 5510 kg/m³, which is 5.5 times denser than water.'],['🚢','A steel ship floats even though steel is heavier than water: its average density is lower, because inside it is mostly air. That is Archimedes’ force at work!']]},
+{kk:[['🦘','Ай — планета емес, Жердің табиғи серігі. Онда ауырлық күші Жердегіден 6 есе әлсіз, сондықтан ғарышкерлер өте биік секіретін.'],['👣','Айда жел де, су да жоқ, сондықтан ғарышкерлердің ізі миллиондаған жыл сақталуы мүмкін.'],['🪶','«Аполлон-15» экспедициясында балға мен қауырсынды бір мезгілде жіберді: ауа жоқ болғандықтан, екеуі бірдей уақытта құлады!']],
+ ru:[['🦘','Луна — не планета, а естественный спутник Земли. Притяжение там в 6 раз слабее земного, поэтому астронавты прыгали очень высоко.'],['👣','На Луне нет ни ветра, ни воды, поэтому следы астронавтов могут сохраняться миллионы лет.'],['🪶','В экспедиции «Аполлон-15» одновременно отпустили молоток и перо: воздуха нет, и они упали одновременно!']],
+ en:[['🦘','The Moon is not a planet but Earth’s natural satellite. Gravity there is 6 times weaker than on Earth, so astronauts could jump very high.'],['👣','There is no wind or water on the Moon, so astronauts’ footprints may last for millions of years.'],['🪶','On the Apollo 15 mission a hammer and a feather were dropped together: with no air, they hit the ground at the same time!']]},
+{kk:[['🏔️','Марста Күн жүйесіндегі ең биік тау — Олимп жанартауы бар: биіктігі шамамен 22 км, яғни Эверестен шамамен 2,5 есе биік.'],['🌅','Марстың күндізгі аспаны қызғылт-сарғыш, ал күн батқанда айналасы көкшіл түске боялады.'],['🌙','Марстың екі серігі бар — Фобос пен Деймос. Ал тәулігі Жердегіге өте жақын: 24 сағат 37 минут.']],
+ ru:[['🏔️','На Марсе находится самая высокая гора Солнечной системы — вулкан Олимп: около 22 км, примерно в 2,5 раза выше Эвереста.'],['🌅','Днём небо на Марсе розово-оранжевое, а закат окрашивается в голубой цвет.'],['🌙','У Марса два спутника — Фобос и Деймос. А сутки почти как земные: 24 часа 37 минут.']],
+ en:[['🏔️','Mars has the tallest mountain in the Solar System — Olympus Mons: about 22 km high, roughly 2.5 times taller than Everest.'],['🌅','The Martian daytime sky is pinkish-orange, while sunsets turn blue.'],['🌙','Mars has two moons — Phobos and Deimos. And its day is close to ours: 24 hours 37 minutes.']]},
+{kk:[['🌀','Үлкен Қызыл дақ — Жерден үлкен дауыл, ол жүздеген жыл бойы толастамай келеді.'],['⚖️','Юпитердің массасы Күн жүйесіндегі барлық басқа планеталардың жиынтығынан 2,5 есе артық.'],['⏱️','Ол — газ алыбы, қатты беті жоқ: көрсетілген g бұлттардың жоғарғы шеті үшін. Бір тәулігі небәрі ~10 сағат — ең жылдам айналатын планета.']],
+ ru:[['🌀','Большое Красное Пятно — буря размером больше Земли, она бушует уже сотни лет.'],['⚖️','Масса Юпитера в 2,5 раза больше массы всех остальных планет Солнечной системы вместе взятых.'],['⏱️','Это газовый гигант без твёрдой поверхности: указанное g — на верхней границе облаков. Сутки всего ~10 часов — самое быстрое вращение среди планет.']],
+ en:[['🌀','The Great Red Spot is a storm bigger than Earth that has been raging for hundreds of years.'],['⚖️','Jupiter’s mass is 2.5 times greater than all the other planets in the Solar System combined.'],['⏱️','It is a gas giant with no solid surface: the g shown is at the cloud tops. A day lasts only ~10 hours — the fastest-spinning planet.']]},
+{kk:[['🛁','Сатурнның орташа тығыздығы судан аз (≈ 690 кг/м³)! Жеткілікті үлкен ванна болса, ол жүзіп жүрер еді — дәл біздің зертхана тақырыбындай!'],['💍','Сақиналары негізінен мұз бөлшектерінен тұрады: ені ~280 000 км, ал қалыңдығы көбіне небәрі ондаған метр.'],['🌕','Сатурнның 140-тан астам серігі бар. Оның ішіндегі Титанның қалың атмосферасы бар.']],
+ ru:[['🛁','Средняя плотность Сатурна меньше плотности воды (≈ 690 кг/м³)! Найдись достаточно большая ванна, он бы плавал — прямо как в нашей лабораторной!'],['💍','Кольца состоят в основном из частиц льда: в ширину ~280 000 км, а толщиной чаще всего лишь десятки метров.'],['🌕','У Сатурна более 140 спутников. У крупнейшего из них, Титана, есть плотная атмосфера.']],
+ en:[['🛁','Saturn’s average density is lower than water (≈ 690 kg/m³)! In a big enough bathtub it would float — just like in our lab!'],['💍','The rings are made mostly of ice particles: ~280,000 km wide but often only tens of metres thick.'],['🌕','Saturn has more than 140 moons. The largest, Titan, has a thick atmosphere.']]},
+{kk:[['🛌','Уран «жатып» айналады: осінің еңкеюі 98°, сондықтан онда әр маусым шамамен 21 жылға созылады.'],['🥶','Оның атмосферасы Күн жүйесіндегі ең суықтардың бірі: шамамен −224 °C.'],['🔭','Уранды 1781 жылы Уильям Гершель телескоппен тапты — бұл телескоппен ашылған алғашқы планета.']],
+ ru:[['🛌','Уран вращается «лёжа на боку»: наклон оси 98°, поэтому каждое время года длится около 21 года.'],['🥶','Его атмосфера — самая холодная в Солнечной системе: около −224 °C.'],['🔭','Уран открыл в 1781 году Уильям Гершель с помощью телескопа — это первая планета, найденная телескопом.']],
+ en:[['🛌','Uranus spins “on its side”: its axis is tilted by 98°, so each season lasts about 21 years.'],['🥶','Its atmosphere is the coldest in the Solar System: about −224 °C.'],['🔭','William Herschel discovered Uranus in 1781 with a telescope — the first planet found that way.']]},
+{kk:[['💨','Нептунде Күн жүйесіндегі ең қатты жел соғады — сағатына 2000 км-ге жуық!'],['📅','Оның бір жылы — 165 жер жылы. 1846 жылы ашылғалы бірінші толық айналымын 2011 жылы ғана аяқтады.'],['🧮','Нептунді алдымен есептеу арқылы «тауып», содан кейін ғана телескоппен көрді (Леверье мен Галле, 1846 жыл).']],
+ ru:[['💨','На Нептуне дуют самые сильные ветры Солнечной системы — почти 2000 км/ч!'],['📅','Его год длится 165 земных лет. С момента открытия в 1846 году первый полный оборот он завершил только в 2011-м.'],['🧮','Нептун сначала «нашли» вычислениями, и только потом увидели в телескоп (Леверье и Галле, 1846 год).']],
+ en:[['💨','Neptune has the fastest winds in the Solar System — close to 2000 km/h!'],['📅','Its year lasts 165 Earth years. Since its discovery in 1846 it completed its first full orbit only in 2011.'],['🧮','Neptune was first “found” by calculation, and only then seen in a telescope (Le Verrier and Galle, 1846).']]}
+];
+const FT={kk:{t:'Қызықты фактілер:',w:'Массасы 40 кг оқушының ауырлық күші (F = m·g): Жерде {e} {u}, ал мұнда — {p} {u}.'},
+ru:{t:'Интересные факты:',w:'Сила тяжести школьника массой 40 кг (F = m·g): на Земле {e} {u}, а здесь — {p} {u}.'},
+en:{t:'Fun facts:',w:'Weight force of a 40 kg student (F = m·g): {e} {u} on Earth, but here — {p} {u}.'}};
+function renderFacts(P){const L=lang(),i=PLN.indexOf(P),d=(FACTS[i]&&(FACTS[i][L]||FACTS[i].kk))||[],ft=FT[L]||FT.kk,u=U();
+$('factsTitle').textContent='🪐 '+ft.t+' '+nm(P);
+$('factsGrid').innerHTML=d.map((f,k)=>`<div class="fact" style="animation-delay:${k*.12}s"><span class="ico">${f[0]}</span><p>${f[1]}</p></div>`).join('');
+const pct=Math.min(100,P.g/PLN[5].g*100),ep=9.8/PLN[5].g*100;
+$('factWeight').innerHTML=`<div class="wt">⚖️ ${ft.w.replace('{e}',fmt(40*9.8,0)).replace('{p}',fmt(40*P.g,0)).replace(/\{u\}/g,u.N)}</div><div class="gbar"><i style="width:${pct}%"></i><s style="left:${ep}%"></s></div><div class="gbarlbl"><span>g = 0</span><span>g = ${fmt(P.g,2)} ${u.Nkg}</span><span>g = ${fmt(PLN[5].g,2)}</span></div>`}
+
+/* ================= Design helpers: progress bar, reveal, active nav ================= */
+(function(){document.documentElement.classList.add('js');
+const bar=$('prog');addEventListener('scroll',()=>{const h=document.documentElement;const m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?h.scrollTop/m*100:0)+'%'},{passive:true});
+const secs=[...document.querySelectorAll('main section')];
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.04});secs.forEach(s=>{s.classList.add('rv');io.observe(s)});
+const links=[...document.querySelectorAll('nav a')],map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.remove('active'));const a=map.get(e.target.id);if(a){a.classList.add('active');const c=a.parentElement;c.scrollTo({left:a.offsetLeft-c.clientWidth/2+a.clientWidth/2,behavior:'smooth'})}}}),{rootMargin:'-35% 0px -55% 0px'});secs.forEach(s=>io2.observe(s))}})();
+const sphere=c=>`radial-gradient(circle at 30% 30%,${c[0]},${c[1]})`;
+function planetUI(){const P=PLN[curPl],u=U();
+$('ppList').innerHTML=PLN.map((p,i)=>`<button type="button" class="pp${i===curPl?' on':''}" role="radio" aria-checked="${i===curPl}" data-i="${i}"><i style="background:${sphere(p.c)}"></i><b>${nm(p)}</b><small>g = ${fmt(p.g,2)}</small></button>`).join('');
+const x=P.g/9.8,rel=Math.abs(x-1)<.02?'':' · '+(x>1?tr('gMore').replace('{x}',fmt(x,1)):tr('gLess').replace('{x}',fmt(1/x,1)));
+const txt=`${nm(P)} · g = ${fmt(P.g,2)} ${u.Nkg}${rel}`;$('ppNow').textContent=tr('planetNow')+' '+txt;$('planetBar').textContent='🪐 '+txt;
+document.querySelectorAll('.gval').forEach(e=>e.textContent=fmt(P.g,2)+' '+u.Nkg);$('headPlanet').dataset.i=curPl;renderFacts(P)}
+function applyPlanet(i){curPl=i;const P=PLN[i],r=document.documentElement.style;G=P.g;
+['--head1','--head2','--blue','--bg','--soft','--soft2','--line'].forEach((v,k)=>r.setProperty(v,P.t[k]));
+$('headPlanet').style.background=sphere(P.c);planetUI();updateModel()}
+$('ppList').addEventListener('click',e=>{const b=e.target.closest('.pp');if(b)applyPlanet(+b.dataset.i)});
+const LOADS=[0.1,0.2,0.3,0.4,0.5,0.6],L0=0.1,XMAX=0.5;
+const sel={mat:0,pl:2,load:0.1};
+function nm(o){return o[lang()]||o.kk}
+function getS(){const M=MAT[sel.mat],P=PLN[sel.pl],m=sel.load,F=m*P.g,x=F/M.k;return{M,P,m,g:P.g,k:M.k,F,x,l:Math.round((L0+x)*1000)/1000}}
+function allowed(M,P){return LOADS.filter(m=>m*P.g/M.k<=XMAX+1e-9)}
+function enforceLoad(){const s=getS(),al=allowed(s.M,s.P);if(!al.includes(sel.load)){const lo=al.filter(m=>m<sel.load);sel.load=lo.length?lo[lo.length-1]:al[0]}}
+function buildSelects(){const en=lang()==='en';enforceLoad();const s=getS(),al=allowed(s.M,s.P);
+$('matSel').innerHTML=MAT.map((m,i)=>`<option value="${i}">${nm(m)}</option>`).join('');
+$('plSel').innerHTML=PLN.map((p,i)=>`<option value="${i}">${nm(p)}</option>`).join('');
+$('loadSel').innerHTML=LOADS.map(m=>`<option value="${m}"${al.includes(m)?'':' disabled'}>${Math.round(m*1000)} ${en?'g':'г'}</option>`).join('');
+$('matSel').value=sel.mat;$('plSel').value=sel.pl;$('loadSel').value=sel.load;$('gShow').textContent=`g = ${fmt(s.g,2)} ${en?'N/kg':'Н/кг'}`}
+
+
+/* ================= Table ================= */
+function stateM(rho,rc){return Math.abs(rho/rc-1)<0.03?'neutral':rho<rc?'float':'sink'}
+let rowCount=0;
+function obsOptions(sel,val){sel.innerHTML=`<option value="">${tr('obs0')}</option><option value="sink">${tr('st_sink')}</option><option value="float">${tr('st_float')}</option><option value="neutral">${tr('st_neutral')}</option>`;sel.value=val||''}
+function addRow(d={}){rowCount++;const t=document.createElement('tr');
+t.innerHTML=`<td class="rowNo">${rowCount}</td><td><input type="number" min="0" step="any" class="mass" value="${d.m??''}" aria-label="m"></td><td><input type="number" min="0" step="any" class="vol" value="${d.V??''}" aria-label="V"></td><td class="rhoCell">—</td><td><input type="number" min="0" step="any" class="rc" value="${d.rc??$('rhoC').value}" aria-label="rho liquid"></td><td class="rCell">—</td><td><select class="obs" aria-label="observed"></select></td><td><input type="number" min="0" step="any" class="ref" value="${d.ref??''}" aria-label="rho ref"></td><td class="dCell">—</td><td class="eCell">—</td>`;
+$('tableBody').appendChild(t);obsOptions(t.querySelector('.obs'),d.obs);t.querySelectorAll('input,select').forEach(i=>i.addEventListener('input',refreshAll));calculateTable()}
+function rows(){return [...$('tableBody').rows].map(r=>{const q=c=>r.querySelector(c),m=Number(q('.mass').value),V=Number(q('.vol').value),rc=Number(q('.rc').value),refv=q('.ref').value,ref=refv===''?NaN:Number(refv);
+const ok=q('.mass').value!==''&&q('.vol').value!==''&&m>0&&V>0&&rc>0;const rho=ok?m/(V*1e-6):NaN,rr=ok?rho/rc:NaN;const pred=ok?stateM(rho,rc):'';const obs=q('.obs').value;
+const d=ok&&Number.isFinite(ref)&&ref>0?Math.abs(rho-ref):NaN;return{m,V,rc,rho,r:rr,pred,obs,ref,d,e:Number.isFinite(d)?d/ref*100:NaN,valid:ok}})}
+function stats(){const r=rows().filter(x=>x.valid);if(!r.length)return null;const w=r.filter(x=>Number.isFinite(x.d));const ob=r.filter(x=>x.obs);
+return{r,n:r.length,nErr:w.length,dk:w.length?w.reduce((s,x)=>s+x.d,0)/w.length:NaN,eps:w.length?w.reduce((s,x)=>s+x.e,0)/w.length:NaN,nObs:ob.length,nMatch:ob.filter(x=>x.obs===x.pred).length}}
+function calculateTable(){const rs=rows();[...$('tableBody').rows].forEach((row,i)=>{const d=rs[i],q=c=>row.querySelector(c);q('.rowNo').textContent=i+1;
+q('.rhoCell').textContent=d.valid?fmt(d.rho,0):'—';q('.rCell').textContent=d.valid?fmt(d.r,2):'—';q('.dCell').textContent=Number.isFinite(d.d)?fmt(d.d,1):'—';q('.eCell').textContent=Number.isFinite(d.e)?fmt(d.e,1):'—';
+const sel=q('.obs');sel.classList.remove('ok','bad');if(d.valid&&d.obs)sel.classList.add(d.obs===d.pred?'ok':'bad')})}
+function firstEmptyRow(){return [...$('tableBody').rows].find(r=>r.querySelector('.mass').value===''&&r.querySelector('.vol').value==='')}
+
+/* ================= Builder ================= */
+const REQ={vessel:[],liquid:['vessel'],body:['liquid'],scale:[],cylinder:[]};
+const asm={vessel:0,liquid:0,body:0,scale:0,cylinder:0};
+const ready=()=>Object.values(asm).every(Boolean);
+const LAYER={vessel:['gVessel','ghVessel'],liquid:['gLiquid','ghLiquid'],body:['gBody','ghBody'],scale:['gScale','ghScale'],cylinder:['gCyl','ghCyl']};
+let msgKey='msgStart';
+function say(k,cls=''){msgKey=k;const b=$('buildMsg');b.textContent=tr(k);b.className='buildmsg '+cls}
+function place(p){if(asm[p])return say('msgAlready');const miss=REQ[p].find(q=>!asm[q]);
+if(miss){say('need_'+miss,'bad');const st=$('stage');st.classList.remove('shake');void st.offsetWidth;st.classList.add('shake');return}
+asm[p]=1;refreshBuild();say(ready()?'msgReady':'msgPlaced','ok')}
+function refreshBuild(){for(const p in LAYER){$(LAYER[p][0]).style.display=asm[p]?'':'none';$(LAYER[p][1]).style.display=asm[p]?'none':''}
+document.querySelectorAll('.part').forEach(b=>b.classList.toggle('used',!!asm[b.dataset.part]));
+const rd=ready();$('controlsWrap').classList.toggle('locked',!rd);$('lockMsg').style.display=rd?'none':'';updateModel()}
+document.querySelectorAll('.part').forEach(b=>{b.addEventListener('click',()=>place(b.dataset.part));b.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',b.dataset.part);e.dataTransfer.effectAllowed='copy'})});
+const stageEl=$('stage');
+stageEl.addEventListener('dragover',e=>{e.preventDefault();stageEl.classList.add('dragover')});stageEl.addEventListener('dragleave',()=>stageEl.classList.remove('dragover'));
+stageEl.addEventListener('drop',e=>{e.preventDefault();stageEl.classList.remove('dragover');const p=e.dataTransfer.getData('text/plain');if(asm.hasOwnProperty(p))place(p)});
+$('resetBuild').addEventListener('click',()=>{for(const p in asm)asm[p]=0;refreshBuild();say('msgStart')});
+
+/* ================= Model ================= */
+function fillSelects(){const b=$('bodySel'),l=$('liqSel'),bv=b.value,lv=l.value;
+b.innerHTML=BOD.map(o=>`<option value="${o.id}">${nm(o)} (${o.rho})</option>`).join('')+`<option value="">${tr('custom')}</option>`;
+l.innerHTML=LIQ.map(o=>`<option value="${o.id}">${nm(o)} (${o.rho})</option>`).join('')+`<option value="">${tr('custom')}</option>`;
+b.value=bv||'';l.value=lv||'';if(!bv&&!b.options[b.selectedIndex])b.value='';}
+function syncSel(){const rd=+$('rhoD').value,rc=+$('rhoC').value;const b=BOD.find(o=>o.rho===rd),l=LIQ.find(o=>o.rho===rc);$('bodySel').value=b?b.id:'';$('liqSel').value=l?l.id:''}
+$('bodySel').addEventListener('change',e=>{const o=BOD.find(x=>x.id===e.target.value);if(o){$('rhoD').value=o.rho;updateModel()}});
+$('liqSel').addEventListener('change',e=>{const o=LIQ.find(x=>x.id===e.target.value);if(o){$('rhoC').value=o.rho;updateModel()}});
+['rhoD','rhoC','vol'].forEach(i=>$(i).addEventListener('input',()=>{syncSel();updateModel()}));
+function sim(){const rd=+$('rhoD').value,rc=+$('rhoC').value,V=+$('vol').value,Vm=V*1e-6,m=rd*Vm,Fg=m*G,FAfull=rc*G*Vm,r=rd/rc,st=stateOf(rd,rc);
+return{rd,rc,V,m,Fg,FAfull,r,st,FAact:st==='sink'?FAfull:Fg,mR:Math.round(m*1000),VR:3*Math.round(V/3)}}
+(function(){let t='';for(let i=0;i<=400;i+=50){const y=330-i*.5;t+=`<line x1="${i%100===0?338:342}" y1="${y}" x2="348" y2="${y}"/>`;if(i%100===0&&i>0)t+=`<text x="353" y="${y+3}" stroke="none">${i}</text>`}$('cylTicks').innerHTML=t})();
+function arrow(x,y0,y1){const dir=y1>y0?1:-1;return `M${x} ${y0}V${y1}M${x-5} ${y1-dir*8}L${x} ${y1}L${x+5} ${y1-dir*8}`}
+function updateModel(){const s=sim(),u=U(),L=lang();
+$('rdOut').textContent=fmt(s.rd,0)+' '+u.kgm3;$('rcOut').textContent=fmt(s.rc,0)+' '+u.kgm3;$('vOut').textContent=fmt(s.V,0)+' '+u.cm3;
+$('stateOut').textContent=tr('st_'+s.st);$('stateBox').className='statebox '+s.st;
+$('ratioOut').textContent=fmt(s.r,2);$('fracOut').textContent=(s.st==='float'?fmt(s.r*100,0):'100')+' %';$('fgOut').textContent=fmt(s.Fg,3)+' '+u.N;$('faOut').textContent=fmt(s.FAfull,3)+' '+u.N;
+$('massOut').textContent=fmt(s.mR,0)+' '+u.g;$('vreadOut').textContent=fmt(s.VR,0)+' '+u.cm3;
+const cmp=s.st==='sink'?'>':s.st==='float'?'<':'=';
+$('calculationText').textContent=`ρ<sub>д</sub>`.replace(/<[^>]+>/g,'')+` = ${fmt(s.rd,0)} ${u.kgm3}, ρ с = ${fmt(s.rc,0)} ${u.kgm3}: ${fmt(s.rd,0)} ${cmp} ${fmt(s.rc,0)} → ${tr('st_'+s.st)}`;
+// stage
+const surf=150,floor=330,side=Math.round(12*Math.cbrt(s.V));let top;
+if(s.st==='sink')top=floor-side;else if(s.st==='float')top=surf-(1-s.r)*side;else top=(surf+floor)/2-side/2;
+$('bodyG').style.transform=`translate(${215-side/2}px,${top}px)`;const br=$('bodyRect');br.setAttribute('width',side);br.setAttribute('height',side);
+br.setAttribute('fill',`hsl(30 ${s.rd>3000?8:45}% ${Math.round(80-Math.min(s.rd,8000)/8000*48)}%)`);
+const lq=LIQ.reduce((a,b)=>Math.abs(b.rho-s.rc)<Math.abs(a.rho-s.rc)?b:a);$('liqFill').setAttribute('fill',lq.col);
+const mx=Math.max(s.Fg,s.FAfull)||1,Lg=14+34*s.Fg/mx,La=14+34*s.FAact/mx,cy=side/2;const maxDown=floor-2-(top+cy);
+$('arrG').setAttribute('d',arrow(side/2+8,cy,cy+Math.min(Lg,Math.max(maxDown,12))));$('arrA').setAttribute('d',arrow(side/2-8,cy,cy-La));
+$('scaleText').textContent=`${s.mR} ${u.g}`;const h=s.VR*.5;$('cylFill').setAttribute('y',floor-h);$('cylFill').setAttribute('height',h);$('cylText').textContent=`V = ${s.VR} ${u.cm3}`;
+updateCompare();drawGraphs()}
+$('resetModel').addEventListener('click',()=>{$('rhoD').value=800;$('rhoC').value=1000;$('vol').value=100;syncSel();updateModel()});
+function recordMeasurement(){if(!ready())return;const s=sim(),data={m:s.mR/1000,V:s.VR,rc:s.rc,obs:s.st,ref:s.rd};
+const row=firstEmptyRow();if(!row)addRow(data);else{const q=c=>row.querySelector(c);q('.mass').value=data.m;q('.vol').value=data.V;q('.rc').value=data.rc;q('.ref').value=data.ref;q('.obs').value=data.obs}
+refreshAll();$('recStatus').textContent=tr('recorded')}
+$('recordBtn').addEventListener('click',recordMeasurement);
+
+/* ================= Graphs ================= */
+function frame(id){const c=$(id),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);return{c,ctx,w:c.width,h:c.height,pad:{l:80,r:28,t:36,b:70}}}
+function emptyMsg(ctx,w,h){ctx.fillStyle='#64748b';ctx.font='18px Nunito,system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(tr('noData'),w/2,h/2)}
+function axes(ctx,w,h,pad,maxY,Y,xl,yl,dec){ctx.font='15px Nunito,system-ui';ctx.strokeStyle='#e5eaf2';ctx.lineWidth=1;ctx.fillStyle='#475569';ctx.textAlign='right';ctx.textBaseline='middle';
+for(let i=0;i<=5;i++){const v=maxY*i/5;ctx.beginPath();ctx.moveTo(pad.l,Y(v));ctx.lineTo(w-pad.r,Y(v));ctx.stroke();ctx.fillText(v.toFixed(dec),pad.l-10,Y(v))}
+ctx.strokeStyle='#64748b';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,h-pad.b);ctx.lineTo(w-pad.r,h-pad.b);ctx.stroke();
+ctx.fillStyle='#1e293b';ctx.font='bold 17px Nunito,system-ui';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(xl,pad.l+(w-pad.l-pad.r)/2,h-30);ctx.save();ctx.translate(22,pad.t+(h-pad.t-pad.b)/2);ctx.rotate(-Math.PI/2);ctx.textBaseline='middle';ctx.fillText(yl,0,0);ctx.restore()}
+const SC={float:'#0e9f8e',neutral:'#e0a100',sink:'#dc2626'};
+function drawGraphs(){}
+
+/* ================= Errors and comparison ================= */
+function updateErrors(){const st=stats(),u=U();
+$('errMatch').textContent=st&&st.nObs?`${st.nMatch} / ${st.nObs}`:'—';
+if(!st||!st.nErr){$('errDk').textContent='—';$('errEps').textContent='—';$('errResult').innerHTML=tr('errNone');return}
+$('errDk').textContent=fmt(st.dk,1)+' '+u.kgm3;$('errEps').textContent=fmt(st.eps,1)+' %';$('errResult').textContent=`${tr('errRes')}: Δρ = ${fmt(st.dk,1)} ${u.kgm3}, ε = ${fmt(st.eps,1)} %`}
+function updateCompare(){const s=sim(),u=U(),st=stats(),last=st?st.r[st.r.length-1]:null;
+$('compareModel').textContent=`ρ = ${fmt(s.rd,0)} ${u.kgm3}, ρ с = ${fmt(s.rc,0)} ${u.kgm3}: ${fmt(s.rd,0)} ${s.st==='sink'?'>':s.st==='float'?'<':'='} ${fmt(s.rc,0)} → ${tr('st_'+s.st)}`;
+const ids=['RhoM','RhoE','RhoA','RhoR','RcM','RcE','RcA','RcR','StM','StE','StA','FaM','FaE'];ids.forEach(i=>{const e=$('cmp'+i);if(e)e.textContent='—'});
+if(!last){$('measuredSummary').textContent=tr('noData');updateErrors();return}
+const rhoM=Number.isFinite(last.ref)?last.ref:s.rd,rcM=s.rc,stM=stateOf(rhoM,last.rc),V=last.V*1e-6;
+$('measuredSummary').textContent=`m = ${fmt(last.m,3)} ${u.kg}, V = ${fmt(last.V,0)} ${u.cm3} → ρ = ${fmt(last.rho,0)} ${u.kgm3}; ${last.obs?tr('st_'+last.obs):'—'}`;
+$('cmpRhoM').textContent=fmt(rhoM,0);$('cmpRhoE').textContent=fmt(last.rho,0);const dA=Math.abs(last.rho-rhoM);$('cmpRhoA').textContent=fmt(dA,1);$('cmpRhoR').textContent=fmt(dA/rhoM*100,1);
+$('cmpRcM').textContent=fmt(rcM,0);$('cmpRcE').textContent=fmt(last.rc,0);const dC=Math.abs(last.rc-rcM);$('cmpRcA').textContent=fmt(dC,1);$('cmpRcR').textContent=fmt(dC/rcM*100,1);
+$('cmpStM').textContent=tr('st_'+stM);$('cmpStE').textContent=last.obs?tr('st_'+last.obs):'—';$('cmpStA').textContent=last.obs?(last.obs===stM?tr('match'):tr('nomatch')):'—';
+$('cmpFaM').textContent=fmt(last.rc*G*V,3);$('cmpFaE').textContent=tr('notMeasured');updateErrors()}
+function refreshAll(){calculateTable();drawGraphs();updateCompare()}
+
+/* ================= Language ================= */
+function applyLanguage(){const L=lang();document.documentElement.lang=L;
+document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n,v=(T[L]&&T[L][k])||T.kk[k];if(v!==undefined)el.innerHTML=v});
+$('studentName').placeholder=L==='ru'?'ФИО':L==='en'?'Full name':'Аты-жөні';$('studentClass').placeholder=L==='en'?'7A':'7 «А»';
+$('conclusion').placeholder=L==='ru'?'Опишите, от чего зависит плавание тела...':L==='en'?'Describe what decides whether a body floats...':'Дененің жүзуі неге байланысты екенін сипаттаңыз...';
+$('danaInput').placeholder=tr('danaPlaceholder');
+$('danaChips').innerHTML='';['chip1','chip2','chip3','chip4'].forEach(k=>{const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent=tr(k);b.addEventListener('click',()=>danaAsk(b.textContent));$('danaChips').appendChild(b)});
+[...$('tableBody').rows].forEach(r=>{const s=r.querySelector('.obs');obsOptions(s,s.value)});
+fillSelects();syncSel();planetUI();$('buildMsg').textContent=tr(msgKey);
+const first=$('danaMsgs').querySelector('.msg.bot[data-hello]');if(first)first.textContent=tr('danaHello');
+updateModel();refreshAll()}
+
+/* ================= Dana ================= */
+const KB=[
+{re:/қателік|погрешн|error|абсолют|салыстырмалы|относит|absolute|relative/i,kk:'Абсолюттік қателік Δρ — өлшенген тығыздық пен анықтамалық мәннің айырмасы (таңбасыз). Салыстырмалы қателік ε = Δρ / ρ_эт · 100 % — қателік мәннің қанша пайызын құрайтынын көрсетеді. 9-бөлімде орташа мәндері автоматты есептеледі.',ru:'Абсолютная погрешность Δρ — разность измеренной и табличной плотности (без знака). Относительная ε = Δρ / ρ_табл · 100 % показывает, какую долю значения она составляет. Средние значения считаются автоматически в разделе 9.',en:'The absolute error Δρ is the difference (without sign) between the measured and the reference density. The relative error ε = Δρ / ρ_ref · 100 % shows what percentage of the value it is. Section 9 calculates the averages for you.'},
+{re:/қысқыш|щипц|tongs/i,kk:'Қысқыш денені ұстап, суға абайлап салуға және алуға көмектеседі. Қолды сулатпайды, су шашырамайды.',ru:'Щипцы нужны, чтобы держать тело и осторожно опускать его в воду или доставать. Руки остаются сухими, вода не разбрызгивается.',en:'Tongs hold the body so you can lower it into the water or lift it out carefully, without wetting your hands or splashing.'},
+{re:/жина|собра|build|assemble|қондырғы|установк|сүйре|перетащ|drag|ыдыс|сосуд|container/i,kk:'Қондырғыны ретімен жина: алдымен ыдыс, содан кейін сұйықтық, содан кейін дене. Таразы мен мензурканы да қой. Бөлшекті басуға немесе сахнаға сүйреп апаруға болады. Бәрі жиналғанда басқару ашылады.',ru:'Собирайте по порядку: сначала сосуд, потом жидкость, затем тело. Поставьте также весы и мензурку. Деталь можно нажать или перетащить на сцену. Когда всё собрано, откроется управление.',en:'Build in order: container first, then liquid, then the body. Add the balance and the cylinder too. You can tap a part or drag it onto the stage. Once everything is in place the controls unlock.'},
+{re:/архимед|archimed|көтеру|выталк|buoy|F_?A/i,kk:'Архимед күші сұйыққа батырылған денеге жоғары қарай әсер етеді: F_A = ρ_с · g · V_бат. Дене жүзгенде Архимед күші ауырлық күшіне тең болады, ал батқанда ауырлық күші үлкен.',ru:'Сила Архимеда действует на погружённое тело вверх: F_A = ρ_ж · g · V_погр. Когда тело плавает, сила Архимеда равна силе тяжести, а когда тонет, сила тяжести больше.',en:'The Archimedes force pushes a submerged body upward: F_A = ρ_l · g · V_sub. When the body floats the Archimedes force equals gravity; when it sinks, gravity is larger.'},
+{re:/тығыздық|плотност|density|ρ/i,kk:'Тығыздық — заттың 1 м³ көлемінің массасы: ρ = m / V, өлшем бірлігі [кг/м³]. Су үшін ол шамамен 1000 кг/м³. Көлемді см³-пен өлшесең, 1 см³ = 0,000001 м³ екенін ұмытпа.',ru:'Плотность — масса вещества в 1 м³: ρ = m / V, единица [кг/м³]. Для воды она примерно 1000 кг/м³. Если объём в см³, помните: 1 см³ = 0,000001 м³.',en:'Density is the mass of 1 m³ of a substance: ρ = m / V, unit [kg/m³]. For water it is about 1000 kg/m³. If volume is in cm³, remember 1 cm³ = 0.000001 m³.'},
+{re:/жүз|плав|float|бат|тон|sink|қалқ|взвеш|suspend|hang/i,kk:'Дененің тығыздығы сұйықтықтан үлкен болса — батады, аз болса — жүзеді, тең болса — сұйық ішінде қалқып тұра алады. Себебі жүзу ауырлық күші мен Архимед күшінің арақатынасына байланысты.',ru:'Если плотность тела больше плотности жидкости — тонет, меньше — плавает, равна — может находиться внутри жидкости во взвешенном состоянии. Это зависит от соотношения силы тяжести и силы Архимеда.',en:'If the body is denser than the liquid it sinks, if less dense it floats, if equal it can hang suspended inside. It depends on the ratio of gravity to the Archimedes force.'},
+{re:/масса|mass|таразы|весы|balance|мензур|cylinder|көлем|объём|объем|volume|өлше|измер|measure/i,kk:'Массаны таразымен, көлемді мензуркамен өлшейміз. Содан кейін ρ = m / V. Таразы массаны 1 г, мензурка көлемді 3 см³ дәлдікпен көрсетеді, сондықтан нәтиже эталоннан аздап ерекшеленеді.',ru:'Массу измеряем весами, объём мензуркой. Затем ρ = m / V. Весы показывают массу с точностью до 1 г, мензурка объём до 3 см³, поэтому результат немного отличается от табличного.',en:'We measure mass with the balance and volume with the cylinder, then ρ = m / V. The balance reads to 1 g and the cylinder to 3 cm³, so the result differs a little from the reference.'},
+{re:/қауіпсіз|безопас|safe|safety/i,kk:'Шыны ыдыстарды абайлап ұста, суды электр құралдарынан алыс ұста, төгілсе дереу сүрт, денелерді суға абайлап сал. Толық тізім 5-бөлімде.',ru:'Аккуратно обращайтесь со стеклом, держите воду подальше от электроприборов, сразу вытирайте пролитое, опускайте тела в воду осторожно. Полный список в разделе 5.',en:'Handle glassware carefully, keep water away from electrical equipment, wipe up spills at once and lower bodies in gently. The full list is in section 5.'}
+];
+const DEFAULT={kk:'Мен физика көмекшісімін. Мына тақырыптардан сұра: тығыздық, дене қашан жүзеді, Архимед күші, қателік, қауіпсіздік, модельді жинау.',ru:'Я помощница по физике. Спрашивайте про плотность, когда тело плавает, силу Архимеда, погрешность, безопасность, сборку модели.',en:'I am a physics helper. Ask me about density, when a body floats, the Archimedes force, error, safety or building the model.'};
+function localAnswer(q){const e=KB.find(x=>x.re.test(q));return e?e[lang()]:DEFAULT[lang()]}
+const hist=[];
+function addMsg(text,who,hello){const d=document.createElement('div');d.className='msg '+who;d.textContent=text;if(hello)d.dataset.hello='1';$('danaMsgs').appendChild(d);$('danaMsgs').scrollTop=1e9;return d}
+async function aiAnswer(q){
+try{if(window.claude&&typeof window.claude.use==='function'){const s=await window.claude.use('sample');if(s){
+const st=stats(),sm=sim(),L={kk:'Kazakh',ru:'Russian',en:'English'}[lang()];
+const ctx=`Planet: ${nm(PLN[curPl])}, g=${G} N/kg. Model: body density=${sm.rd} kg/m3, liquid density=${sm.rc} kg/m3, volume=${sm.V} cm3, assembled=${ready()}. Table: ${st?st.n+' measurements':'no data'}.`;
+const prompt=`You are Dana, a friendly little astronaut who helps a 7th-grade student with a physics lab on floating conditions (density of body vs liquid, Archimedes force F_A=rho*g*V, gravity F=mg, r=rho_body/rho_liquid, absolute and relative error of density). Answer in ${L}, in at most 4 short sentences, in simple words. Guide with hints and explanations; do not just give the final numbers for the student's table. If the question is not about this lab or physics, kindly steer back. Lab context: ${ctx}\nConversation so far:\n${hist.slice(-6).map(h=>h.r+': '+h.t).join('\n')}\nStudent: ${q}`;
+const r=await s(prompt,{cache:false});if(r&&r.text)return r.text}}}catch(e){}
+return localAnswer(q)}
+async function danaAsk(q){q=(q||'').trim();if(!q)return;addMsg(q,'me');hist.push({r:'Student',t:q});const th=addMsg(tr('danaThinking'),'bot');const a=await aiAnswer(q);th.textContent=a;hist.push({r:'Dana',t:a});$('danaMsgs').scrollTop=1e9}
+$('danaForm').addEventListener('submit',e=>{e.preventDefault();const v=$('danaInput').value;$('danaInput').value='';danaAsk(v)});
+$('danaBtn').addEventListener('click',()=>{const p=$('danaPanel');p.hidden=!p.hidden;$('danaBtn').querySelector('.bubble').style.display=p.hidden?'':'none';if(!p.hidden)$('danaInput').focus()});
+$('danaClose').addEventListener('click',()=>{$('danaPanel').hidden=true;$('danaBtn').querySelector('.bubble').style.display=''});
+addMsg(T.kk.danaHello,'bot',true);
+
+/* ================= Wiring ================= */
+$('addRow').addEventListener('click',()=>{addRow();refreshAll()});
+$('fillExample').addEventListener('click',()=>{$('tableBody').innerHTML='';rowCount=0;[[.025,100,1000,'float',240],[.052,100,1000,'float',520],[.091,100,1000,'float',900],[.268,100,1000,'sink',2700],[.781,100,1000,'sink',7800]].forEach(a=>addRow({m:a[0],V:a[1],rc:a[2],obs:a[3],ref:a[4]}));refreshAll()});
+$('clearTable').addEventListener('click',()=>{$('tableBody').innerHTML='';rowCount=0;addRow();refreshAll()});
+$('language').addEventListener('change',applyLanguage);
+$('themeChoice').addEventListener('change',e=>{document.body.classList.remove('contrast','warm','cool');if(e.target.value!=='default')document.body.classList.add(e.target.value)});
+$('largeText').addEventListener('click',()=>document.body.classList.toggle('large-text'));
+const outside=el=>el.closest('#dana');
+$('saveWork').addEventListener('click',()=>{if(!$('studentName').value.trim()||!$('studentClass').value.trim()){$('saveStatus').textContent=tr('needName');$('studentTop').scrollIntoView({behavior:'smooth'});return}
+document.body.classList.add('work-locked');document.querySelectorAll('input,textarea,select').forEach(el=>{if(!outside(el)&&el.id!=='language'&&el.id!=='themeChoice')el.disabled=true});document.querySelectorAll('button').forEach(el=>{if(!outside(el)&&!['startOver','largeText'].includes(el.id))el.disabled=true});$('saveStatus').textContent=tr('saved')});
+$('startOver').addEventListener('click',()=>{if(!confirm(tr('confirmRestart')))return;document.body.classList.remove('work-locked');document.querySelectorAll('input,textarea,select,button').forEach(el=>el.disabled=false);
+['studentName','studentClass','conclusion'].forEach(i=>$(i).value='');$('studentMass').value=40;$('saveStatus').textContent='';$('recStatus').textContent='';$('tableBody').innerHTML='';rowCount=0;for(let i=0;i<5;i++)addRow();
+$('rhoD').value=800;$('rhoC').value=1000;$('vol').value=100;for(const p in asm)asm[p]=0;syncSel();refreshBuild();say('msgStart');refreshAll()});
+
+for(let i=0;i<5;i++)addRow();
+fillSelects();syncSel();refreshBuild();applyLanguage();say('msgStart');applyPlanet(curPl);
+</script></body></html>
